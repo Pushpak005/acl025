@@ -1,0 +1,61 @@
+[
+  {
+    "title": "Grilled Chicken & Quinoa Bowl",
+    "hero": "Chicken Quinoa",
+    "type": "nonveg",
+    "tags": [
+      "high-protein-snack",
+      "low-carb",
+      "light-clean"
+    ],
+    "link": "https://www.zomato.com/bangalore?query=grilled%20chicken%20quinoa",
+    "provenance": "Partner menus; macros via OpenFoodFacts (approx). Reasoning: AI Assistant v2 (rules)."
+  },
+  {
+    "title": "Paneer Tikka Salad",
+    "hero": "Paneer Salad",
+    "type": "veg",
+    "tags": [
+      "high-protein-snack",
+      "low-carb",
+      "light-clean"
+    ],
+    "link": "https://www.swiggy.com/search?query=paneer%20tikka%20salad",
+    "provenance": "Partner menus; macros via OpenFoodFacts (approx). Reasoning: AI Assistant v2 (rules)."
+  },
+  {
+    "title": "Moong Dal Khichdi (Satvik)",
+    "hero": "Satvik Khichdi",
+    "type": "veg",
+    "tags": [
+      "satvik",
+      "light-clean",
+      "low-sodium"
+    ],
+    "link": "https://www.swiggy.com/search?query=moong%20dal%20khichdi",
+    "provenance": "Traditional Satvik recipes; macros via OpenFoodFacts (approx). Reasoning: AI Assistant v2 (rules)."
+  },
+  {
+    "title": "Grilled Fish with Greens",
+    "hero": "Grilled Fish",
+    "type": "nonveg",
+    "tags": [
+      "high-protein-snack",
+      "light-clean",
+      "low-sodium"
+    ],
+    "link": "https://www.zomato.com/bangalore?query=grilled%20fish%20greens",
+    "provenance": "Partner menus; macros via OpenFoodFacts (approx). Reasoning: AI Assistant v2 (rules)."
+  },
+  {
+    "title": "Greek Yogurt & Berry Cup",
+    "hero": "Yogurt Cup",
+    "type": "veg",
+    "tags": [
+      "low-calorie-dessert",
+      "high-protein-snack"
+    ],
+    "link": "https://www.swiggy.com/search?query=greek%20yogurt%20berries",
+    "provenance": "Packaged product labels; macros via OpenFoodFacts (approx). Reasoning: AI Assistant v2 (rules)."
+  }
+]

@@ -1,0 +1,37 @@
+[
+  {
+    "id": "fittr",
+    "name": "Fittr",
+    "description": "Fittr is an Indian fitness platform with more than 500 expert coaches who provide holistic fitness support. They offer personalized diet plans, training tools and nutrition guidance. While their community features and some tools are free, one‑on‑one coaching services are paid.",
+    "link": "https://fittr.com",
+    "paid": true
+  },
+  {
+    "id": "fitpage",
+    "name": "Fitpage",
+    "description": "Fitpage combines nutrition, fitness and recovery. Their app provides audio‑guided running programs and assesses cardiovascular fitness with the fit500 test. The platform offers personalized workout and nutrition recommendations. Sign‑up is free, but coaching plans may be paid.",
+    "link": "https://fitpage.in",
+    "paid": true
+  },
+  {
+    "id": "healthonplanet",
+    "name": "HealthOnPlanet",
+    "description": "HealthOnPlanet is a medical collaboration platform offering virtual consultations with doctors and dietitians. It is particularly suited for users with high blood pressure or elevated blood sugar who may need professional advice. Additional charges may apply depending on the consultation.",
+    "link": "https://healthonplanet.com",
+    "paid": true
+  },
+  {
+    "id": "dietitian1",
+    "name": "Dr. Rina Patel (Demo)",
+    "description": "Dr. Rina Patel is a registered dietitian based in Bengaluru. For demo purposes she agrees to review your meal selections and provide basic feedback via email. Turnaround time is typically one day. This service is free for the demonstration.",
+    "email": "rina.patel@example.com",
+    "paid": false
+  },
+  {
+    "id": "dietitian2",
+    "name": "Mr. Rajesh Kumar (Demo)",
+    "description": "Mr. Rajesh Kumar is a certified nutritionist offering demo reviews for this project. He can evaluate your preferences and send suggestions through email or a shared spreadsheet. This is a free demonstration service.",
+    "email": "rajesh.kumar@example.com",
+    "paid": false
+  }
+]

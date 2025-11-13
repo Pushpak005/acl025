@@ -1,0 +1,48 @@
+// Snippet: add this function to app.js and call loadPartnerMenus() instead of loadRecipes()
+async function loadPartnerMenus() {
+  try {
+    const r = await fetch('data/partner_menus.json');
+    if (!r.ok) throw new Error('Failed to load partner menus');
+    const items = await r.json();
+    if (!Array.isArray(items)) throw new Error('partner menus must be an array');
+
+    // Allowed partner vendors (case-insensitive). You can maintain this list in window.PARTNER_VENDORS
+    const partners = (window.PARTNER_VENDORS || ['Shree Krishna Veg']).map(p => p.toLowerCase().trim());
+
+    // Filter to partner vendors
+    let filtered = items.filter(it => {
+      const v = (it.vendor || '').toLowerCase().trim();
+      return partners.includes(v);
+    });
+
+    // Simple dedupe by title (lowercase)
+    const seen = new Set();
+    filtered = filtered.filter(it => {
+      const t = String(it.title || '').trim().toLowerCase();
+      if (!t) return false;
+      if (seen.has(t)) return false;
+      seen.add(t);
+      return true;
+    });
+
+    // Normalize to shape used by the app (title, price, description, vendor, tags, macros)
+    const normalized = filtered.map(it => ({
+      title: it.title,
+      price: Number(it.price || 0),
+      description: it.description || '',
+      vendor: it.vendor || '',
+      tags: it.tags || [],     // optional precomputed tags
+      macros: it.macros || null // leave null so ensureMacros() can fetch macros on demand
+    }));
+
+    state.catalog = normalized;
+    recompute(); // existing app function to rebuild picks and UI
+  } catch (e) {
+    console.error('Failed to load partner menus', e);
+    // fallback: you can call existing loadRecipes() or keep static catalog
+  }
+}
+
+// UI hint: in the card renderer, show vendor if available:
+// const vendorHtml = item.vendor ? `<div class="muted small">Vendor: ${escapeHtml(item.vendor)}</div>` : '';
+// Append vendorHtml into the dish card markup so users can see the hotel name.

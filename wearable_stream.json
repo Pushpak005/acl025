@@ -1,0 +1,12 @@
+{
+  "timestamp": 1710000000000,
+  "heartRate": 82,
+  "steps": 5230,
+  "calories": 340,
+  "caloriesBurned": 430,
+  "bpSystolic": 118,
+  "bpDiastolic": 79,
+  "analysis": {
+    "activityLevel": "Moderate"
+  }
+}

@@ -1,0 +1,159 @@
+:root{
+  /*
+   * Light theme colours
+   *
+   * The original dark palette was attractive but could feel heavy on mobile
+   * devices.  To make the UI more approachable we switch to a light
+   * background with soft greys for panels and cards.  Accent colours remain
+   * consistent with the brand.  You can tweak these values to fine‑tune the
+   * contrast and mood of your app.
+   */
+  /* Dark theme colours: navy backgrounds with light text. */
+  --bg: #0e111a;
+  --panel: #1c2330;
+  --ring: #2b3a55;
+  --text: #e8eef5;
+  --muted: #94a3b8;
+  --accent: #4fc3ff;
+  --accent2: #3ee7c6;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body.bg{
+  margin:0;
+  /* Dark gradient background. */
+  background:linear-gradient(180deg,#0e111a 0%,#111827 100%);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial;
+}
+
+.phone{max-width:420px;margin:18px auto;padding:8px}
+@media(max-width:460px){.phone{margin:0;padding:12px}}
+
+/*
+ * Top bar uses a translucent white background with subtle shadow for depth.
+ */
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:5;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:10px 14px;
+  margin:0 0 8px 0;
+  background:rgba(28,35,48,0.9);
+  backdrop-filter:blur(6px);
+  border:1px solid var(--ring);
+  border-radius:14px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.3);
+}
+.topbar-left{display:flex;align-items:center;gap:8px}
+.avatar{font-size:18px}
+.uname{font-weight:700}
+.icon-btn{font-size:18px;color:var(--accent);text-decoration:none}
+
+.content{display:flex;flex-direction:column;gap:14px}
+.panel{
+  background:linear-gradient(180deg,rgba(28,35,48,0.95),rgba(24,31,44,0.95));
+  border:1px solid var(--ring);
+  border-radius:18px;
+  padding:14px;
+  box-shadow:0 8px 24px rgba(0,0,0,0.3);
+}
+.brand-row{display:flex;flex-direction:column}
+.brand-row h1{margin:0;font-size:20px}
+.tag{margin-top:4px;color:var(--muted);font-size:12px}
+.now{font-size:26px;font-weight:800;letter-spacing:.3px}
+
+/* Alert banners use a soft red tint on light mode */
+.banner{
+  margin:8px 0;
+  padding:10px;
+  border:1px solid #591f2a;
+  background:#411a2b;
+  border-radius:10px;
+  color:#f8d7da;
+}
+
+.metrics{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:10px 0}
+.metric{
+  border:1px solid var(--ring);
+  border-radius:12px;
+  padding:10px;
+  text-align:center;
+  background:rgba(28,35,48,0.8);
+}
+.metric .label{font-size:12px;color:var(--muted)}
+.metric .value{font-size:20px;font-weight:700;margin-top:3px}
+
+.row-between{display:flex;justify-content:space-between;align-items:center}
+.linklike{background:none;border:none;color:var(--accent);font-weight:600;cursor:pointer}
+
+/* Primary pill button gets a gradient and light drop shadow */
+.pill{
+  border:none;
+  cursor:pointer;
+  font-weight:700;
+  padding:12px 16px;
+  border-radius:14px;
+  color:#ffffff;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  box-shadow:inset 0 -2px 0 rgba(255,255,255,0.2),0 4px 12px rgba(0,0,0,0.15);
+}
+.pill.ghost{
+  background:rgba(28,35,48,0.7);
+  color:var(--text);
+  border:1px solid var(--ring);
+}
+.chip{
+  border:1px solid var(--ring);
+  background:rgba(28,35,48,0.7);
+  color:var(--text);
+  padding:8px 12px;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:600;
+}
+.w100{width:100%}
+.nav-ctr{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:10px}
+
+.cards{list-style:none;margin:10px 0 0 0;padding:0;display:flex;flex-direction:column;gap:12px}
+.card{
+  border:1px solid var(--ring);
+  border-radius:16px;
+  padding:12px;
+  background:rgba(28,35,48,0.8);
+}
+.tile{
+  height:96px;
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:repeating-linear-gradient(45deg,rgba(79,195,255,0.15),rgba(79,195,255,0.15) 12px, rgba(62,231,198,0.1) 12px, rgba(62,231,198,0.1) 24px);
+  color:#a9d7ff;
+  font-size:22px;
+  font-weight:800;
+}
+h4{margin:0;font-size:16px}
+.whybox{
+  margin-top:8px;
+  padding:10px;
+  border:1px dashed var(--ring);
+  border-radius:10px;
+  background:rgba(28,35,48,0.8);
+  font-size:14px;
+}
+.whyline b{color:#a9d7ff}
+
+.form{display:flex;flex-direction:column;gap:10px}
+.input{width:100%;padding:12px;border-radius:12px;border:1px solid var(--ring);background:rgba(7,12,23,.65);color:var(--text)}
+.choices{display:flex;gap:8px;margin:10px 0}
+.choice{flex:1;border:1px solid var(--ring);background:rgba(7,12,23,.65);color:var(--text);border-radius:12px;padding:12px;font-weight:700;cursor:pointer}
+.choice.active{outline:2px solid var(--accent)}
+.check{display:flex;align-items:center;gap:8px;margin-top:6px}
+
+.muted{color:var(--muted)}
+.small{font-size:12px}
+.foot{margin-top:12px;color:var(--muted);font-size:11px;text-align:center}

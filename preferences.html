@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>Preferences • Healthy Diet</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body class="bg">
+  <div class="phone">
+    <main class="content">
+      <section class="panel">
+        <h3>Quick Preferences</h3>
+        <p class="muted small">Just one step. Change anytime.</p>
+
+        <div class="choices">
+          <button class="choice" data-v="veg">🥦 Veg</button>
+          <button class="choice" data-v="nonveg">🍗 Non-Veg</button>
+          <button class="choice" data-v="both">🥦+🍗 Both</button>
+        </div>
+
+        <label class="check">
+          <input id="satvik" type="checkbox"/> Satvik only
+        </label>
+
+        <div style="margin-top:12px">
+          <label class="muted small">Auto-update picks every:</label>
+          <select id="updateInterval" style="width:100%;padding:10px;border-radius:10px;margin-top:6px;background:rgba(7,12,23,.65);color:var(--text);border:1px solid var(--ring)">
+            <option value="15">15 minutes</option>
+            <option value="30">30 minutes</option>
+            <option value="60" selected>1 hour</option>
+            <option value="180">3 hours</option>
+            <option value="0">Manual only</option>
+          </select>
+        </div>
+
+        <button id="save" class="pill w100">Save & Continue →</button>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    let chosen=null;
+    document.querySelectorAll('.choice').forEach(c=>{
+      c.addEventListener('click',()=>{
+        document.querySelectorAll('.choice').forEach(x=>x.classList.remove('active'));
+        c.classList.add('active'); chosen=c.dataset.v;
+      });
+    });
+
+    const existing = JSON.parse(localStorage.getItem('prefs') || 'null');
+    if(existing){
+      document.querySelectorAll('.choice').forEach(c=>{ if(c.dataset.v === existing.diet) c.classList.add('active'); });
+      document.getElementById('satvik').checked = !!existing.satvik;
+      if(existing.updateInterval) document.getElementById('updateInterval').value = existing.updateInterval.toString();
+      chosen = existing.diet;
+    }
+
+    document.getElementById('save').addEventListener('click',()=>{
+      if(!chosen){ alert('Pick one'); return; }
+      const prefs={ diet:chosen, satvik: document.getElementById('satvik').checked, updateInterval: Number(document.getElementById('updateInterval').value) };
+      localStorage.setItem('prefs', JSON.stringify(prefs));
+      window.location.href='index.html';
+    });
+  </script>
+</body>
+</html>

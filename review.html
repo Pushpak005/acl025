@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>Human Review • Healthy Diet</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body class="bg">
+  <div class="phone">
+    <header class="topbar">
+      <div class="topbar-left">
+        <span class="avatar">🧑‍⚕️</span>
+        <span class="uname" id="helloName">Hi</span>
+      </div>
+      <a class="icon-btn" href="index.html" aria-label="Back">⬅️</a>
+    </header>
+
+    <main class="content">
+      <section class="panel brand">
+        <div class="brand-row">
+          <h1>Healthy Diet</h1>
+          <p class="tag">Simple • Friendly • Fast</p>
+        </div>
+        <div class="now" id="clock">--:--</div>
+      </section>
+
+      <section class="panel">
+        <h3>Get Reviewed by a Nutritionist</h3>
+        <p class="muted small">For personalised guidance, choose from our trusted nutritionists or dietitians. Free demo providers are marked as free; others may charge for their services.</p>
+
+        <div id="reviewDish" class="muted" style="margin-bottom:12px"></div>
+        <ul id="reviewList" class="cards"></ul>
+      </section>
+
+      <section class="panel">
+        <button class="pill w100" id="backBtn">← Back to Picks</button>
+        <p class="foot">The professionals listed here are independent providers. Any health advice they offer is their own responsibility.</p>
+      </section>
+    </main>
+  </div>
+
+  <script src="review.js" defer></script>
+  <script>
+    // update greeting and clock
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    document.getElementById('helloName').textContent = user?.name || 'Friend';
+    setInterval(()=>{
+      const d=new Date(); document.getElementById('clock').textContent = d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+    },1000);
+  </script>
+</body>
+</html>

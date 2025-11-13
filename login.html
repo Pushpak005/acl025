@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>Login • Healthy Diet</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body class="bg">
+  <div class="phone">
+    <main class="content">
+      <section class="panel brand">
+        <div class="brand-row">
+          <h1>Healthy Diet</h1>
+          <p class="tag">Simple • Friendly • Fast</p>
+        </div>
+        <div class="now" id="clock">--:--</div>
+      </section>
+      <section class="panel">
+        <h3>Welcome 👋</h3>
+        <form id="loginForm" class="form">
+          <input id="name" class="input" required placeholder="Your name">
+          <input id="email" class="input" type="email" required placeholder="you@example.com">
+          <button class="pill w100" type="submit">Continue →</button>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // update clock on login page
+    setInterval(() => {
+      const d = new Date();
+      const el = document.getElementById('clock');
+      if (el) el.textContent = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }, 1000);
+    document.getElementById('loginForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const user = {
+        name: document.getElementById('name').value.trim(),
+        email: document.getElementById('email').value.trim()
+      };
+      localStorage.setItem('user', JSON.stringify(user));
+      window.location.href = 'preferences.html';
+    });
+  </script>
+</body>
+</html>
