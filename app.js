@@ -42,6 +42,56 @@ let state = {
 // { title, hero, link, tags:[], macros:null, price, hotel, id }
 async function loadPartnerMenus() {
   try {
+    // 1) Try static file first (fast and reliable if present)
+    try {
+      const respStatic = await fetch('/data/partner_menus.json', { cache: "no-cache" });
+      if (respStatic.ok) {
+        const arr = await respStatic.json();
+        if (Array.isArray(arr) && arr.length) {
+          return arr.map((m, idx) => ({
+            id: 'p_' + idx,
+            name: m.name || m.title || '',
+            title: String(m.name || m.title || '').trim(),
+            hero: String(m.name || m.title || '').trim(),
+            link: m.link || (`https://www.swiggy.com/search?q=${encodeURIComponent((m.name || '').trim() + ' ' + (m.hotel || ''))}`),
+            tags: m.tags || [],
+            macros: m.macros || null,
+            price: m.price || '',
+            hotel: m.hotel || '',
+          })).filter(it => it.title);
+        }
+      }
+    } catch (e) {
+      console.info('Static partner_menus.json not reachable (ok), will try function', e && e.message);
+    }
+
+    // 2) Fallback: Netlify function
+    const resp = await fetch('/.netlify/functions/getPartnerMenus');
+    if (resp.ok) {
+      const js = await resp.json();
+      if (js && js.success && Array.isArray(js.menus)) {
+        return js.menus.map((m, idx) => ({
+          id: 'p_' + idx,
+          name: m.name || m.title || '',
+          title: String(m.name || m.title || '').trim(),
+          hero: String(m.name || m.title || '').trim(),
+          link: m.link || (`https://www.swiggy.com/search?q=${encodeURIComponent((m.name || '').trim() + ' ' + (m.hotel || ''))}`),
+          tags: m.tags || [],
+          macros: m.macros || null,
+          price: m.price || '',
+          hotel: m.hotel || '',
+        })).filter(it => it.title);
+      }
+    }
+    return [];
+  } catch (e) {
+    console.error('Failed to load partner menus:', e);
+    return [];
+  }
+}
+
+async function loadPartnerMenus() {
+  try {
     // try Netlify function first
     const resp = await fetch('/.netlify/functions/getPartnerMenus');
     if (resp.ok) {
