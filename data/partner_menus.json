@@ -1,44 +1,2277 @@
 [
-  {"title":"Kaju Paneer Masala","price":360,"description":"Paneer cooked in cashew flavored brown gravy.","vendor":"Shree Krishna Veg","source":"partnersheet"},
-  {"title":"Paneer Tikka Masala","price":360,"description":"Tandoor grilled paneer chunks in brown gravy.","vendor":"Shree Krishna Veg","source":"partnersheet"},
-  {"title":"Palak Paneer","price":330,"description":"Paneer cubes cooked in spinach curry.","vendor":"Shree Krishna Veg","source":"partnersheet"},
-  {"title":"Paneer Tawa Masala","price":360,"description":"Paneer chunks, onion, capsicum & tomato in","vendor":"Shree Krishna Veg","source":"partnersheet"},
-  {"title":"Kofta Zaikedar","price":360,"description":"Minced vegetable koftas in mildly spiced brown curry.","vendor":"Shree Krishna Veg","source":"partnersheet"},
-  {"title":"Nargis Kofta Curry","price":340,"description":"Kofta served in spicy red gravy.","vendor":"Shree Krishna Veg","source":"partnersheet"},
-  {"title":"Paneer Rajwadi","price":360,"description":"Paneer Stuffed Sandwich Cutting Red Gravy","vendor":"Shree Krishna Veg","source":"partnersheet"},
-  {"title":"Paneer Lazeez","price":350,"description":"Paneer chunk scooked in red capsicum gravy.","vendor":"Shree Krishna Veg","source":"partnersheet"},
-  {"title":"Maharaja Veg","price":330,"description":"Mixed minced vegetables served in thick red gravy.","vendor":"Shree Krishna Veg","source":"partnersheet"},
-  {"title":"Paneer Butter Masala","price":360,"description":"Paneer cubes in mildly spiced creamy red gravy.","vendor":"Shree Krishna Veg","source":"partnersheet"},
-  {"title":"Paneer Bhurji","price":360,"description":"Grated paneer tossed with onion and tomato.","vendor":"Shree Krishna Veg","source":"partnersheet"},
-  {"title":"Subz Maratha","price":360,"description":"Minced vegetables balls, served in red gravy with spicy kolhapuri tadka.","vendor":"Shree Krishna Veg","source":"partnersheet"},
-  {"title":"Paneer Amritsari","price":360,"description":"Grated paneer balls cooked in red gravy.","vendor":"Shree Krishna Veg","source":"partnersheet"},
-  {"title":"Subz Patiala","price":360,"description":"Minced vegetables stuffed papad rolls served in red gravy.","vendor":"Shree Krishna Veg","source":"partnersheet"},
-  {"title":"Krishna Special Veg Curry","price":370,"description":"Serves 1 | Mixed of two vegetable one sweet creamy one spicy red.","vendor":"Shree Krishna Veg","source":"partnersheet"},
-  {"title":"Paneer Musallam","price":350,"description":"Serves 1 | Paneer with capsicum green gravy.","vendor":"Shree Krishna Veg","source":"partnersheet"},
-  {"title":"Paneer Kolhapuri","price":350,"description":"Paneer in spice red gravy.","vendor":"Shree Krishna Veg","source":"partnersheet"},
-  {"title":"Paneer Golati","price":360,"description":"Stuffed Paneer chunks served in cheesy brown gravy.","vendor":"Shree Krishna Veg","source":"partnersheet"},
-  {"title":"Paneer Chatpata","price":360,"description":"Paneer mashed & marinated in tangy red gravy.","vendor":"Shree Krishna Veg","source":"partnersheet"},
-  {"title":"Subz Bhuna","price":350,"description":"Vegetable balls served in mild red gravy.","vendor":"Shree Krishna Veg","source":"partnersheet"},
-  {"title":"Subz Diwani Handi","price":340,"description":"Tomato diced cutting in green gravy","vendor":"Shree Krishna Veg","source":"partnersheet"},
-  {"title":"Kaju Tawa Paneer","price":360,"description":"Paneer & cashew pan fried in dry brown gravy.","vendor":"Shree Krishna Veg","source":"partnersheet"},
-  {"title":"Mirch Paneer","price":360,"description":"Paneer finger served in spicy red gravy.","vendor":"Shree Krishna Veg","source":"partnersheet"},
-  {"title":"Malai Kofta Curry","price":340,"description":"Grated paneer and khoya kofta in creamy white gravy.","vendor":"Shree Krishna Veg","source":"partnersheet"},
-  {"title":"Chole Bhatura","price":330,"description":"Boiled chana in brown gravy served with two bhaturas.","vendor":"Shree Krishna Veg","source":"partnersheet"},
-  {"title":"Paneer Kofta","price":350,"description":"Deep fried paneer kofta served over mild brown gravy.","vendor":"Shree Krishna Veg","source":"partnersheet"},
-  {"title":"Subz Jalfrezi","price":330,"description":"Assorted vegetables in tangy red gravy.","vendor":"Shree Krishna Veg","source":"partnersheet"},
-  {"title":"Subz Kolhapuri","price":330,"description":"Minced vegetables served in spicy red gravy.","vendor":"Shree Krishna Veg","source":"partnersheet"},
-  {"title":"Methi Mutter Malai","price":330,"description":"Fenugreek, green peas served with sweet creamy g","vendor":"Shree Krishna Veg","source":"partnersheet"},
-  {"title":"Paneer Do Pyaza","price":320,"description":"Brown gravy and spinach & onion","vendor":"Shree Krishna Veg","source":"partnersheet"},
-  {"title":"Sam Savera","price":340,"description":"Paneer & minced vegetable koftas served over red gra","vendor":"Shree Krishna Veg","source":"partnersheet"},
-  {"title":"Subz Peshawari","price":340,"description":"Minced vegetables & cheese sereved in brown grav","vendor":"Shree Krishna Veg","source":"partnersheet"},
-  {"title":"Dum Alu Kashmiri","price":330,"description":"Potato stuffed with paneer in sweet creamy gravy.","vendor":"Shree Krishna Veg","source":"partnersheet"},
-  {"title":"Subz Chilly Milly","price":320,"description":"Assorted minced vegetables in brown gravy with dash of green chillies.","vendor":"Shree Krishna Veg","source":"partnersheet"},
-  {"title":"Mashroom Baby","price":330,"description":"","vendor":"Shree Krishna Veg","source":"partnersheet"},
-  {"title":"Navaratna Kurma","price":330,"description":"Mixed vegetables & fresh mixed fruits ina sweet creamy gravy.","vendor":"Shree Krishna Veg","source":"partnersheet"},
-  {"title":"Mushroom Tawa Masala","price":300,"description":"Brown Greave Dry M. Spicy Onion & Capcicum Cube Cutting","vendor":"Shree Krishna Veg","source":"partnersheet"},
-  {"title":"Corn Masala","price":330,"description":"Mushrooms served with baby corn in brown gravy.","vendor":"Shree Krishna Veg","source":"partnersheet"},
-  {"title":"Cheese Peas Curry","price":320,"description":"Cheese & Green Peas in Brown gravy","vendor":"Shree Krishna Veg","source":"partnersheet"},
-  {"title":"Mushroom Masala","price":290,"description":"Brown Gravy Is Spicy","vendor":"Shree Krishna Veg","source":"partnersheet"},
-  {"title":"Chana Masala","price":280,"description":"Boiled chana in brown gravy.","vendor":"Shree Krishna Veg","source":"partnersheet"},
-  {"title":"Plain Palak","price":300,"description":"Plain Palak Only","vendor":"Shree Krishna Veg","source":"partnersheet"}
+  {
+    "hotel": "Healthybee",
+    "name": "Paneer Sprouts Salad",
+    "price": 259
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Spinach Paneer Bhurji Chapati Meal",
+    "price": 294
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Non-Veg High Protein Meal Box",
+    "price": 401
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Rajma Masala Brown Rice Meal Box",
+    "price": 319
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Protein Rich Chickpea Curry Brown Rice Meal Box",
+    "price": 314
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Chicken Tikka Wrap",
+    "price": 265
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Protein Rich Chickpea Wrap",
+    "price": 257
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Strawberry Banana Chia Smoothie",
+    "price": 209
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Protein Rich Chickpea Sandwich",
+    "price": 200
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Chicken Tikka Sandwich",
+    "price": 208
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Only Peri Peri Grilled Chicken [200 gm]",
+    "price": 349
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Purple Rice",
+    "price": 169
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Quinoa Chicken Tabbouleh Salad",
+    "price": 349
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Quinoa Paneer Tabbouleh Salad",
+    "price": 319
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Paneer Burrito Bowl",
+    "price": 319
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Chicken Grilled Sandwich",
+    "price": 197
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Paneer Tikka Grilled Sandwich",
+    "price": 208
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Veg Grilled Sandwich",
+    "price": 169
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Punjabi Club Grilled Sandwich",
+    "price": 251
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Chicken Coleslaw Sandwich",
+    "price": 192
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Omelette Chicken Decker Sandwich",
+    "price": 299
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Veg Sandwich",
+    "price": 136
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Chicken Mayo Grilled Sandwich",
+    "price": 219
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Bite into the goodness of chicken and mayonnaise enveloped in multi-grain grilled sandwich.",
+    "price": 181
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Boiled Egg Sandwich",
+    "price": 181
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Veg Coleslaw Sandwich",
+    "price": 169
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Cheese Chilli Grilled Sandwich",
+    "price": 191
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Paneer Peri Peri Salad",
+    "price": 279
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Peri - Peri Chicken Salad",
+    "price": 299
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Jamaican Jerk Chicken Salad",
+    "price": 299
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Basil Pesto Chicken Salad",
+    "price": 299
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Creamy Garlic Chicken Salad",
+    "price": 319
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Steamed Chicken Salad - Lean Protein",
+    "price": 299
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Zesty Herbs Grilled Paneer Salad",
+    "price": 279
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Classic Grill Chicken Salad",
+    "price": 299
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Sprouts Salad",
+    "price": 194
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Fruit Sprouts Salad",
+    "price": 230
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Paneer Salad",
+    "price": 240
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Boiled Eggs Salad",
+    "price": 204
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Chickpea Beetroot Salad",
+    "price": 249
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Corn Sprouts Salad",
+    "price": 194
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Corn Salad",
+    "price": 194
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Chicken Curry Brown Rice Meal Box",
+    "price": 324
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Palak Paneer Chapati Meal Box",
+    "price": 274
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Protein Rich Chickpea Curry Chapati Meal Box",
+    "price": 294
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Chicken Curry Chapati Meal Box",
+    "price": 299
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Palak Paneer Brown Rice Meal Box",
+    "price": 294
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Rajma Masala Chapati Meal Box",
+    "price": 309
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Paneer Wrap",
+    "price": 251
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Chicken Egg Wrap",
+    "price": 284
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Packed with eggs, chicken, and vegetables, this wheat paratha wrap is prepared in olive oil.",
+    "price": 207
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Corn Veggie Wrap",
+    "price": 207
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Chicken Wrap",
+    "price": 262
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Egg Wrap",
+    "price": 207
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Spinach Egg White Omelette (Protein &amp; Iron Rich)",
+    "price": 189
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Chicken Omelette ( Lean Protein Source )",
+    "price": 249
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Double Deck Chicken Omelette",
+    "price": 259
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Spinach Egg White Bhurji (Protein &amp; Iron Rich)",
+    "price": 249
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Boiled Eggs (3 Pcs)",
+    "price": 89
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Masala Omelette (Healthy Bhi, Desi Bhi)",
+    "price": 159
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Chicken Brown Rice Bowl",
+    "price": 299
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Paneer Brown Rice Bowl",
+    "price": 274
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Veg Brown Rice Bowl",
+    "price": 240
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Egg Brown Rice Bowl",
+    "price": 274
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Banana Date Smoothie",
+    "price": 220
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Banana Milkshake",
+    "price": 139
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Apple Banana Milkshake",
+    "price": 165
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Healthy and flavorful shake prepared with milk, apple, and banana.",
+    "price": 155
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Apple Milkshake",
+    "price": 155
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Pomegranate Juice [sugar-free]",
+    "price": 165
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Basil Papaya Juice [sugar-free]",
+    "price": 155
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Carrot Beetroot Juice [sugar-free]",
+    "price": 155
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Basil Watermelon Juice [sugar-free]",
+    "price": 155
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Balance Fruit Bowl",
+    "price": 184
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Fruit Custard Bowl",
+    "price": 169
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Quinoa Chickpea Tabbouleh Salad",
+    "price": 279
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Peanut Butter Fruits Oatmeal",
+    "price": 249
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Fruit Milk Oats",
+    "price": 179
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Milk Oats",
+    "price": 149
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Brown Rice (200 gm)",
+    "price": 140
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Beetroot Chapati (1 Pc)",
+    "price": 35
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Parsley Dip",
+    "price": 39
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Spinach Chapati (1 Pc)",
+    "price": 35
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Chicken Burrito Bowl",
+    "price": 339
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Cucumber Mint Lemonade",
+    "price": 129
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Honey Ginger Lemonade",
+    "price": 129
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "Classic Lemonade",
+    "price": 90
+  },
+  {
+    "hotel": "Healthybee",
+    "name": "P P L Detox [sugar-free]",
+    "price": 184
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Surmai Thali",
+    "price": 650
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Pomfret Thali",
+    "price": 770
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Chicken Malvani Thali",
+    "price": 400
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Gomanntak Special Seafood Thali",
+    "price": 890
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Gomanntak Konkan Special Thali",
+    "price": 790
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Prawns Thali",
+    "price": 650
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Crab Thali",
+    "price": 650
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Bangda Thali",
+    "price": 450
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Bombil Thali",
+    "price": 450
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Mandeli Thali",
+    "price": 350
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Veg Thali",
+    "price": 250
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Egg Thali",
+    "price": 210
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Mutton Malvani Thali",
+    "price": 600
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Surmai Curry",
+    "price": 689
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Surmai Konkan Curry",
+    "price": 689
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Surmai Tawa Masala",
+    "price": 495
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Surmai Tikhale",
+    "price": 689
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Prawns Konkan Curry",
+    "price": 589
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Prawns Masala",
+    "price": 589
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Prawns Sukka",
+    "price": 589
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Prawns Curry",
+    "price": 589
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Chicken Kombdi Vade",
+    "price": 590
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Chicken Malwani Handi",
+    "price": 390
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Chicken Curry",
+    "price": 350
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Chicken Sukka",
+    "price": 350
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Chicken Maratha Curry",
+    "price": 350
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Chicken Masala",
+    "price": 350
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Chicken Kadai",
+    "price": 350
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Chicken Handi",
+    "price": 390
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Chicken Keema",
+    "price": 350
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Chicken Maratha Handi",
+    "price": 390
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Chicken Tawa Masala",
+    "price": 350
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Tisrya Sukka",
+    "price": 450
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Tisrya Masala",
+    "price": 450
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Tisrya Curry",
+    "price": 450
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Pomfret Tikhale",
+    "price": 689
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Pomfret Tawa Masala",
+    "price": 689
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Pomfret Konkan Curry",
+    "price": 689
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Pomfret Curry",
+    "price": 689
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Bangda Tawa Masala",
+    "price": 450
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Bangda Tikhale",
+    "price": 450
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Bangda Curry",
+    "price": 450
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Bangda Konkan Curry",
+    "price": 450
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Mutton Curry",
+    "price": 550
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Mutton Sukka Dry",
+    "price": 550
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Mutton Vade",
+    "price": 610
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Mutton Handi",
+    "price": 550
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Mutton Maratha Handi",
+    "price": 550
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Mutton Masala",
+    "price": 550
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Mutton Tawa Dry",
+    "price": 550
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Veg Malwani Handi",
+    "price": 260
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Mix Veg",
+    "price": 160
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Paneer Handi",
+    "price": 270
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Paneer Bhurji",
+    "price": 180
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Matar Paneer",
+    "price": 170
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Veg Handi",
+    "price": 250
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Veg Kadai",
+    "price": 250
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Dal Fry",
+    "price": 120
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Dal Tadka",
+    "price": 130
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Veg Saguti",
+    "price": 170
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Veg Tawa",
+    "price": 170
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Paneer Butter Masala",
+    "price": 200
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Lasooni Dal",
+    "price": 130
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Paneer Kadhai",
+    "price": 270
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Green Peas Masala",
+    "price": 120
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Shev Bhaji",
+    "price": 120
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Egg Curry",
+    "price": 170
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Egg Masala",
+    "price": 170
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Egg Bhurji",
+    "price": 100
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Egg Omelette",
+    "price": 90
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Boiled Egg",
+    "price": 60
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Prawns 65",
+    "price": 590
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Tossed Prawns [8 Pieces]",
+    "price": 590
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Prawns Koliwada [8 Pieces]",
+    "price": 590
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Prawn Golden Fried",
+    "price": 490
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Tossed Crab",
+    "price": 590
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Crab Lollipop [6 Pieces]",
+    "price": 400
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Fish Fingers [6 Pieces]",
+    "price": 340
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Chicken Lollipop [6 Pieces]",
+    "price": 300
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Chicken Tava Fry",
+    "price": 250
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Crab Lasooni Tadka",
+    "price": 590
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Prawns Chilli",
+    "price": 490
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Prawns Lasooni Tadka [6 Pieces]",
+    "price": 590
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Chicken Lasuni Tadka",
+    "price": 300
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Tossed Prawns",
+    "price": 590
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Prawns Tawa Fry",
+    "price": 490
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Surmai Tawa Fry",
+    "price": 690
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Pomfret Tawa Fry",
+    "price": 610
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Bangada Tawa Fry",
+    "price": 250
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Surmai Rava Fry",
+    "price": 690
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Pomfret Rava Fry",
+    "price": 630
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Prawns Rava Fry",
+    "price": 600
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Bombil Rava Fry",
+    "price": 390
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Mandeli Rava Fry",
+    "price": 260
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Bangda Rava Fry",
+    "price": 490
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Crab Masala",
+    "price": 590
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Crab Sukka",
+    "price": 590
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Crab Konkan Curry",
+    "price": 590
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Crab Curry",
+    "price": 510
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Solkadi",
+    "price": 70
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Kokum Sharbat",
+    "price": 40
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Mirgund Papad",
+    "price": 35
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Roasted Papad",
+    "price": 20
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Paneer 65 [8 Piece]",
+    "price": 310
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Paneer Chilly [8 Piece]",
+    "price": 310
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Surmai Fry [1 Pieces] With Prawns Curry & Steamed Rice",
+    "price": 699
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Chicken Thali With Prawns Fry",
+    "price": 670
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Chicken Thali With Surmai Fry",
+    "price": 670
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Pomfret Fry With Prawns Curry & Steamed Rice",
+    "price": 599
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Prawns Fry With Prawns Curry & Steamed Rice",
+    "price": 750
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Bangda Fry With Prawns Curry & Steamed Rice",
+    "price": 490
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Bombil Fry With Prawns Curry & Steamed Rice",
+    "price": 400
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Chicken Thali With Bangda Fry",
+    "price": 580
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Chicken Thali With Bombil Fry",
+    "price": 580
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Kolambi Bhaat",
+    "price": 550
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Prawns Biryani",
+    "price": 599
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Mutton Biryani",
+    "price": 590
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Fish Biryani",
+    "price": 699
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Chicken Biryani",
+    "price": 450
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Egg Biryani",
+    "price": 350
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Veg Biryani",
+    "price": 290
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Dal Khichdi",
+    "price": 250
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Jeera Rice",
+    "price": 110
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Plain Rice",
+    "price": 89
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Paneer Biryani",
+    "price": 300
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Surmai Chatpata Biryani",
+    "price": 599
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Crab Lahsuni Biryani",
+    "price": 599
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Pomfret Fry Biryani",
+    "price": 599
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Mutton Kolhapuri Biryani",
+    "price": 550
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Chicken Kolhapuri Biryani",
+    "price": 350
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Bangda Fry Masala Biryani",
+    "price": 450
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Veg Kolhapuri Biryani",
+    "price": 300
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Crab Lasuni Biryani",
+    "price": 599
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Chicken Lasooni Tadka [6 Pieces](soup)",
+    "price": 330
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Chicken Chilli",
+    "price": 300
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Crab Soup",
+    "price": 280
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Chicken Soup",
+    "price": 180
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Prawns Soup",
+    "price": 280
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Chicken Clear Soup",
+    "price": 140
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Potato Bhaji",
+    "price": 120
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Veg Soup",
+    "price": 140
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Mutton Soup",
+    "price": 190
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Mutton Clear Soup",
+    "price": 180
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Chicken Tawa Fry",
+    "price": 330
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Chicken Oil Fry [8 Pieces]",
+    "price": 300
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Rice Bhakri",
+    "price": 49
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Chapati",
+    "price": 29
+  },
+  {
+    "hotel": "Swad Gomantak",
+    "name": "Vada [2 Pieces]",
+    "price": 70
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Kaju Paneer Masala",
+    "price": 360
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Paneer Tikka Masala",
+    "price": 360
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Palak Paneer",
+    "price": 330
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Paneer Tawa Masala..",
+    "price": 360
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Kofta Zaikedar",
+    "price": 360
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Nargis Kofta Curry.",
+    "price": 340
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Paneer Rajwadi",
+    "price": 360
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Paneer Lazeez.",
+    "price": 350
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Maharaja Veg",
+    "price": 330
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Paneer Butter Masala..",
+    "price": 360
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Paneer Bhurji",
+    "price": 360
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Subz Maratha",
+    "price": 360
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Paneer Amritsari",
+    "price": 360
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Subz Patiala",
+    "price": 360
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Krishna Special Veg Curry",
+    "price": 370
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Paneer Musallam",
+    "price": 350
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Paneer Kolhapuri",
+    "price": 350
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Paneer Golati",
+    "price": 360
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Paneer Chatpata..",
+    "price": 360
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Subz Bhuna",
+    "price": 350
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Subz Diwani Handi",
+    "price": 340
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Kaju Tawa Paneer",
+    "price": 360
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Mirch Paneer",
+    "price": 360
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Malai Kofta Curry",
+    "price": 340
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Chole Bhatura",
+    "price": 330
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Paneer Kofta",
+    "price": 350
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Subz Jalfrezi",
+    "price": 330
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Subz Kolhapuri.",
+    "price": 330
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Methi Mutter Malai",
+    "price": 330
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Paneer Do Pyaza",
+    "price": 320
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Sam Savera",
+    "price": 340
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Subz Peshawari",
+    "price": 340
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Dum Alu Kashmiri",
+    "price": 330
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Subz Chilly Milly",
+    "price": 320
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Mashroom Baby",
+    "price": 330
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Navaratna Kurma",
+    "price": 330
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Mushroom Tawa Masala :",
+    "price": 300
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Corn Masala",
+    "price": 330
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Cheese Peas Curry",
+    "price": 320
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Mushroom Masala",
+    "price": 290
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Chana Masala",
+    "price": 280
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Plain Palak",
+    "price": 300
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Lasuni Methi",
+    "price": 300
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Green Peas Masala....",
+    "price": 280
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Alu Jeera",
+    "price": 270
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Alu Muttar",
+    "price": 260
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Alu Gobi",
+    "price": 260
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Alu Methi",
+    "price": 260
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Alu Palak",
+    "price": 260
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Hyderabadi Biryani",
+    "price": 330
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Veg Biryani",
+    "price": 330
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Dal Khichadi",
+    "price": 290
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Palak Khichadi",
+    "price": 270
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Khichadi Kadhi",
+    "price": 310
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Peas Pulao",
+    "price": 260
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Dum Biryani",
+    "price": 340
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Paneer Tikka Biryani.",
+    "price": 330
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Paneer Pulao",
+    "price": 315
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Kashmiri Pulao",
+    "price": 305
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Cheese Pulao.",
+    "price": 315
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Dahi Khichadi",
+    "price": 310
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Subz Pulao",
+    "price": 280
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Jeera Rice",
+    "price": 190
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Curd Rice",
+    "price": 240
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Steam Rice",
+    "price": 170
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Veg Item. Vegetable Manchurian",
+    "price": 310
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Chilli Paneer",
+    "price": 330
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Spring Rolls",
+    "price": 330
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Paneer Satay",
+    "price": 350
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Crispy Paneer.",
+    "price": 350
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Kungpao Paneer",
+    "price": 350
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Crispy Vegetables",
+    "price": 340
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Honey Corn Chilli Paneer.",
+    "price": 350
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Shanghai Paneer.",
+    "price": 350
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Noodle Crispy Paneer",
+    "price": 330
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Vegetable Lollipop",
+    "price": 330
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Shezwan Tikka Paneer.",
+    "price": 340
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Paneer Hot Pan",
+    "price": 340
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Black Pepper Paneer.",
+    "price": 330
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Baby Corn Golden Fried",
+    "price": 320
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Plain Pav Bhaji",
+    "price": 195
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Butter Pav",
+    "price": 70
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Tawa Pulav",
+    "price": 290
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Paneer Pav Bhaji",
+    "price": 215
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Paneer Tawa Pulav",
+    "price": 320
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Jain Pav Bhaji",
+    "price": 230
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Cheese Tawa Pulav",
+    "price": 320
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Masala Pav",
+    "price": 170
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Cheese Pav Bhaji",
+    "price": 215
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Only Bhaji",
+    "price": 150
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Khada Pav Bhaji",
+    "price": 220
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Khada Bhaji",
+    "price": 180
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Jain Paneer Kofta",
+    "price": 370
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Jain Paneer Masala",
+    "price": 360
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Jain Kaju Masala",
+    "price": 360
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Jain Kaju Curry",
+    "price": 360
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Jain Paneer Pulao",
+    "price": 330
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Jain Palak Paneer",
+    "price": 330
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Jain Green Peas Pulao",
+    "price": 280
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Jain Cheese Pulao",
+    "price": 330
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Jain Chana Masala",
+    "price": 290
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Jain Green Peas Masala",
+    "price": 300
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Jain Dal Fry",
+    "price": 280
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Naan Butter",
+    "price": 85
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Roti Plain",
+    "price": 45
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Paneer Paratha",
+    "price": 160
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Cheese Paratha",
+    "price": 170
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Roti Butter",
+    "price": 60
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Methi Roti",
+    "price": 95
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Alu Paratha",
+    "price": 140
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Methi Paratha",
+    "price": 140
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Garlic Naan",
+    "price": 105
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Cheese Naan",
+    "price": 120
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Stuffed Kulcha",
+    "price": 105
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Onion Kulcha",
+    "price": 95
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Cheese Butter",
+    "price": 130
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Bhatura",
+    "price": 110
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Kulcha Butter",
+    "price": 95
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Paratha Butter",
+    "price": 85
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Naan Plain",
+    "price": 70
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Pudina Roti",
+    "price": 95
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Missi Roti",
+    "price": 80
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Paratha Plain",
+    "price": 75
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Veg Item. Schezwan Noodles",
+    "price": 330
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Hakka Noodles",
+    "price": 290
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Veg Manchurian",
+    "price": 310
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Paneer Manchurian",
+    "price": 310
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Vegetable Chow Mein",
+    "price": 310
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "American Chopsuey",
+    "price": 330
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Singapori Chilli Noodles",
+    "price": 310
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Mushroom Manchurian.",
+    "price": 310
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Veg Schezwan",
+    "price": 310
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Veg Hot Garlic Sauce",
+    "price": 310
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Paneer Schezwan",
+    "price": 310
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Cream Of Tomato Soup",
+    "price": 190
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Veg Item. Cream Of Brocolli",
+    "price": 205
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Manchow Soup.",
+    "price": 195
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Manchow Soup",
+    "price": 195
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Tomyum Soup",
+    "price": 215
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Wonton Noodle Soup",
+    "price": 210
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Sweet Corn Soup",
+    "price": 195
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Spinach Soup",
+    "price": 195
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Wonton Soup",
+    "price": 200
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Cream Of Mashroom Soup",
+    "price": 195
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Cream Of Veg Soup",
+    "price": 195
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Lemon Coriander Soup",
+    "price": 185
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Vegetable Clear Soup",
+    "price": 185
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Hot & Sour Soup",
+    "price": 185
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Multani Mushroom",
+    "price": 320
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Peri Peri Tikka Paneer",
+    "price": 310
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Reshmi Tikka",
+    "price": 310
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Paneer Angara........",
+    "price": 310
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Hara Bhara Kebab",
+    "price": 290
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Paneer Akbari, Malai Kebab (Sweet)",
+    "price": 310
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Veg Seekh Kabab",
+    "price": 300
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Baby Corn Tandoor",
+    "price": 300
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Gadbad",
+    "price": 295
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Dry Fruit Falooda",
+    "price": 260
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Sp. Falooda Kesar Kulfi",
+    "price": 260
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Special Fruit Salad",
+    "price": 210
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Fruit Plate With Cream",
+    "price": 270
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Special Fruit Salad With Icecream",
+    "price": 245
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Mango Mastani",
+    "price": 240
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Jelly With Ice Cream",
+    "price": 210
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Fruit Salad",
+    "price": 190
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Gulab Jamun (2 Pcs)",
+    "price": 130
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Sizzling Brownie",
+    "price": 295
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Fruit Jelly",
+    "price": 190
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Banana Boat",
+    "price": 280
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Spl. Mastani (Mango)",
+    "price": 310
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Spl. Mastani (Strawberry).",
+    "price": 310
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Schezwan Garlic Fried Rice",
+    "price": 390
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Triple Schezwan Rice...",
+    "price": 370
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Triple Manchurian Rice",
+    "price": 370
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Burnt Garlic Fried Rice.",
+    "price": 320
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Singapore Fried Rice...",
+    "price": 310
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Dal Tadka",
+    "price": 250
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Dal Kolhapuri Tadka",
+    "price": 280
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Dal Makkhani",
+    "price": 280
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Dhabewali Dal",
+    "price": 290
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Dal Palak",
+    "price": 260
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Dal Fry",
+    "price": 230
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Paneer Chilly Grilled S/W",
+    "price": 240
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Bombay Grill S/W",
+    "price": 200
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Veg Sandwich",
+    "price": 140
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Veg Grill S/W",
+    "price": 200
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Cheese Grill S/W",
+    "price": 180
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Tomato Omelette Toast S/W",
+    "price": 180
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Jam Toast",
+    "price": 115
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Toast Butter",
+    "price": 95
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Bread Butter",
+    "price": 85
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Jam Butter",
+    "price": 95
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Bread Slice 2 Pcs",
+    "price": 60
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Cheese Corn Grill S/W",
+    "price": 210
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Mashroom Corn Grill S/W",
+    "price": 220
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Veg Fingers",
+    "price": 220
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Masala Fries",
+    "price": 180
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Potato Cheese Pops",
+    "price": 220
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Cheese Garlic Bread",
+    "price": 215
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Aloo Tikki",
+    "price": 220
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Plain Fries",
+    "price": 180
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Chocolate",
+    "price": 170
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Strawberry",
+    "price": 160
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Butterscotch",
+    "price": 160
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Vanilla",
+    "price": 160
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Matka Kulfi",
+    "price": 120
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Malai Kulfi",
+    "price": 110
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Cassatta",
+    "price": 110
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Stick Kulfi",
+    "price": 90
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Kesar Pista",
+    "price": 170
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Pineapple Kaitha",
+    "price": 160
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Boondi Kaitha",
+    "price": 160
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Subz Raitha",
+    "price": 160
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Curd",
+    "price": 150
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Masala Papad",
+    "price": 75
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Cheese Masala Papad",
+    "price": 95
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Fry Papad.",
+    "price": 50
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Roasted Papad",
+    "price": 45
+  },
+  {
+    "hotel": "shree krishna veg menues",
+    "name": "Green Salad",
+    "price": 160
+  }
 ]
