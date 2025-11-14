@@ -1,13 +1,14 @@
 (() => {
-/* Healthy Diet – Vendor-menu build
+/* Healthy Diet – Partner menus only
    - Today’s Picks come only from vendor_menus.json (Healthybee, Swad Gomantak, Shree Krishna Veg).
-   - No external recipe API, no /api/vendor-catalog, no location parameter.
+   - No /api/vendor-catalog.
+   - No external recipe API.
    - Wearable + /api/profile-tags drive ranking.
-   - Why + evidence + DeepSeek logic kept.
+   - Why + evidence + DeepSeek logic retained.
 */
 
-const VENDOR_MENUS_URL = "vendor_menus.json";
-const WEARABLE_URL = "wearable_stream.json";
+const VENDOR_MENUS_URL  = "vendor_menus.json";
+const WEARABLE_URL      = "wearable_stream.json";
 const NUTRITIONISTS_URL = "nutritionists.json";
 
 let state = {
@@ -17,13 +18,11 @@ let state = {
   tagStats: loadCache("tagStats"),
   nutritionists: [],
   evidenceCache: loadCache("evidenceCache"),
-
   profileTags: { tags: [], medical_flags: [], reasoning: '' }
 };
 
 // -----------------------------------------------------------------------------
-// Load partner vendor menus directly from vendor_menus.json
-// This ignores location and just aggregates all vendors’ dishes.
+// Load vendor menus directly from vendor_menus.json
 async function loadVendorMenus() {
   try {
     const data = await safeJson(VENDOR_MENUS_URL, null);
@@ -43,7 +42,7 @@ async function loadVendorMenus() {
         });
       });
     });
-    if (items.length === 0) {
+    if (!items.length) {
       console.warn("No dishes found in vendor_menus.json");
       return;
     }
@@ -55,7 +54,7 @@ async function loadVendorMenus() {
 }
 
 // -----------------------------------------------------------------------------
-// Profile tags generation (LLM via /api/profile-tags)
+// Profile tags via /api/profile-tags
 async function fetchProfileTags() {
   try {
     const prefs = JSON.parse(localStorage.getItem('prefs') || '{}');
@@ -67,7 +66,6 @@ async function fetchProfileTags() {
         preferences: prefs
       })
     });
-
     if (resp.ok) {
       const data = await resp.json();
       if (data && Array.isArray(data.tags)) {
@@ -80,7 +78,6 @@ async function fetchProfileTags() {
   } catch (e) {
     console.warn('Failed to fetch profile tags:', e);
   }
-
   state.profileTags = { tags: [], medical_flags: [], reasoning: '' };
 }
 
@@ -116,12 +113,12 @@ window.APP_BOOT = async function(){
   // nutritionists (if used)
   state.nutritionists = await safeJson(NUTRITIONISTS_URL, []);
 
-  // wearable + tags + vendor menus
+  // initial data
   await pullWearable();
   await fetchProfileTags();
   await loadVendorMenus();
 
-  // poll wearable
+  // wearable polling
   state.wearableTimer = setInterval(pullWearable, 15 * 60 * 1000);
 
   function simulateWearableChanges(){
@@ -227,16 +224,11 @@ function recompute(resetPage=false){
 function scoreItem(item){
   let s = 0; const tags = item.tags || []; const w = state.wearable || {};
 
-  // preference model
   tags.forEach(t => s += (state.model[t] || 0));
 
-  // profile tag boost
   const profileTags = state.profileTags?.tags || [];
-  tags.forEach(tag => {
-    if (profileTags.includes(tag)) s += 12;
-  });
+  tags.forEach(tag => { if (profileTags.includes(tag)) s += 12; });
 
-  // medical flags
   const medicalFlags = state.profileTags?.medical_flags || [];
   if (medicalFlags.includes('high-bp') || medicalFlags.includes('elevated-bp')) {
     if (!tags.includes('low-sodium') && tags.includes('high-sodium')) s -= 8;
@@ -245,15 +237,12 @@ function scoreItem(item){
     if (!tags.includes('light-clean') && !tags.includes('low-calorie')) s -= 4;
   }
 
-  // vitals heuristics
   if((w.caloriesBurned||0) > 400 && tags.includes('high-protein-snack')) s += 8;
   if(((w.bpSystolic||0) >= 130 || (w.bpDiastolic||0) >= 80) && tags.includes('low-sodium')) s += 10;
   if(((w.analysis?.activityLevel||'').toLowerCase()) === 'low' && tags.includes('light-clean')) s += 6;
 
-  // novelty
   s += Math.random() * 1.5;
 
-  // bandit
   tags.forEach(tag => {
     const stats = state.tagStats[tag] || { shown: 0, success: 0 };
     const banditScore = (stats.success + 1) / (stats.shown + 2);
@@ -261,7 +250,6 @@ function scoreItem(item){
   });
 
   if (item.llmScore != null) s += (item.llmScore * 2);
-
   return s;
 }
 
@@ -319,7 +307,6 @@ function cardHtml(item){
   const vendorLabel = item.vendorName
     ? `🏪 ${escapeHtml(item.vendorName)}${item.price ? ` • ₹${item.price}` : ''}`
     : '';
-  // For now keep Swiggy search; you can later replace with /order route.
   const q = `${item.title} healthy`;
   const searchUrl = `https://www.swiggy.com/search?q=${encodeURIComponent(q)}`;
   return `
@@ -342,40 +329,267 @@ function cardHtml(item){
     </li>`;
 }
 
-// ---------- Why + evidence + DeepSeek ----------
-// (reuse your existing buildWhyHtml, toggleWhy, fetchEvidenceForTag, ensureMacros, feedback, model store)
-// For brevity, keep those functions as they are in your current file.
+// ---------- Why explanation (heuristic + evidence + LLM) ----------
+function buildWhyHtml(item){
+  const w = state.wearable || {};
+  const personas = ["our analysis"];
+  const persona = personas[0];
+  const reasons = [];
 
-function loadModel(){ try{ return JSON.parse(localStorage.getItem('userModel') || '{}'); } catch(_){ return {}; } }
-function saveModel(m){ localStorage.setItem('userModel', JSON.stringify(m)); }
-// ---------- macros via OpenFoodFacts function ----------
-async function ensureMacros(item){
-  if (item.macros) return;
+  const profileTags = state.profileTags?.tags || [];
+  const medicalFlags = state.profileTags?.medical_flags || [];
 
-  const cached = state.macrosCache[item.title];
-  if (cached && Date.now() - (cached.ts || 0) < 7 * 24 * 60 * 60 * 1000) {
-    item.macros = cached.macros;
-    item.macrosSource = cached.source;
+  if (medicalFlags.includes('high-bp') || medicalFlags.includes('elevated-bp')) {
+    if ((item.tags || []).includes('low-sodium')) {
+      reasons.push("blood pressure management → low sodium recommended");
+    }
+  }
+  if (medicalFlags.includes('high-activity')) {
+    if ((item.tags || []).includes('high-protein') || (item.tags || []).includes('high-protein-snack')) {
+      reasons.push("high activity recovery → protein-rich meal");
+    }
+  }
+  if (medicalFlags.includes('low-activity')) {
+    if ((item.tags || []).includes('light-clean') || (item.tags || []).includes('low-calorie')) {
+      reasons.push("low activity → light, nutrient-dense option");
+    }
+  }
+
+  const matchedTags = (item.tags || []).filter(t => profileTags.includes(t));
+  if (matchedTags.length > 0 && reasons.length === 0) {
+    const tagNames = matchedTags.slice(0, 2).join(', ');
+    reasons.push(`recommended diet pattern: ${tagNames}`);
+  }
+
+  if((w.caloriesBurned||0) > 400 && (item.tags || []).includes('high-protein-snack')) reasons.push("high calorie burn → protein supports recovery");
+  if(((w.bpSystolic||0) >= 130 || (w.bpDiastolic||0) >= 80) && (item.tags || []).includes('low-sodium')) reasons.push("elevated BP → low sodium helps");
+  if(((w.analysis?.activityLevel||'').toLowerCase()) === 'low' && (item.tags || []).includes('light-clean')) reasons.push("low activity → lighter, easy-to-digest meal");
+
+  const tagExplain = {
+    'satvik':'simple, plant-based, easy to digest',
+    'low-carb':'lower carbs to avoid spikes',
+    'high-protein':'higher protein to support muscle',
+    'high-protein-snack':'higher protein to support muscle',
+    'low-sodium':'reduced sodium for BP control',
+    'light-clean':'minimal oil, clean prep',
+    'balanced':'well-rounded nutrition',
+    'anti-inflammatory':'anti-inflammatory benefits'
+  };
+  const fallback = (item.tags||[]).map(t => tagExplain[t]).filter(Boolean)[0] || 'matches your preferences';
+  let why = reasons.length ? reasons.join(' • ') : fallback;
+
+  const w2 = state.wearable || {};
+  const hasVitals = (w2 && (w2.caloriesBurned != null || (w2.bpSystolic != null && w2.bpDiastolic != null) || (w2.analysis && w2.analysis.activityLevel)));
+  if (hasVitals) {
+    const parts = [];
+    if (w2.caloriesBurned != null) parts.push('calorie burn');
+    if (w2.bpSystolic != null && w2.bpDiastolic != null) parts.push('blood pressure');
+    if (w2.analysis && w2.analysis.activityLevel) parts.push('activity');
+    const metricsList = parts.join(', ');
+    why = `${why} based on your wearable metrics (${metricsList})`;
+  } else {
+    why = `${why} based on your wearable metrics`;
+  }
+
+  return `<div class="whyline"><b>${persona}:</b> ${escapeHtml(why)}.</div>`;
+}
+
+function toggleWhy(item){
+  const id = slug(item.title);
+  const box = byId(`whybox-${id}`);
+  if (!box) return;
+
+  if (item.__reasonHtml) {
+    box.innerHTML = item.__reasonHtml;
+    box.hidden = false;
     return;
   }
 
-  try {
+  box.hidden = false;
+  box.innerHTML = buildWhyHtml(item);
+  box.innerHTML += '<div class="loading">Fetching evidence and AI reasoning…</div>';
+
+  ensureMacros(item).then(() => {
+    const tags = item.tags || [];
+    const tag = tags[0];
+    const fetchEv = item.__evidence ? Promise.resolve(item.__evidence) : fetchEvidenceForTag(tag).then(ev => {
+      item.__evidence = ev; return ev;
+    });
+    fetchEv.then(async (ev) => {
+      if(ev && ev.url){
+        box.innerHTML += `<br><span class="muted small">Evidence: <a href="${escapeHtml(ev.url)}" target="_blank" rel="noopener">View study</a></span>`;
+      }
+      const evidenceAbstract = ev?.abstract || '';
+      const w = state.wearable || {};
+      const macros = item.macros || {};
+      const systemMsg = {
+        role: 'system',
+        content: `You are a clinical nutritionist. Always: 
+- Say: "According to the study shown in evidence, ..." (never reveal the full study title).
+- Give a 1–2 sentence summary of that study.
+- Add a correlation/proving statement tying the study's findings to the user's current metrics AND the dish's tags/macros.
+- If applicable, list relevant points from this 4-point block with 1–2 matching foods: 1) higher stress markers → calming, anti-inflammatory foods; 2) lower calorie burn & steps → balanced, nutrient-dense but not calorie-heavy; 3) sleep issues → magnesium-rich, sleep-supportive foods; 4) support bone healing → protein, calcium, vitamin D.
+- End with: So our dish "${item.title}" best fulfils these for you today.
+Keep the answer under 120 words.`
+      };
+      const userMsg = {
+        role: 'user',
+        content: `User metrics now: heartRate=${w.heartRate ?? 'NA'}, caloriesBurned=${w.caloriesBurned ?? 'NA'}, steps=${w.steps ?? 'NA'}, bloodPressure=${w.bpSystolic ?? 'NA'}/${w.bpDiastolic ?? 'NA'}.
+Recommended diet patterns (LLM-generated): ${(state.profileTags?.tags || []).join(', ') || 'none'}.
+Medical flags: ${(state.profileTags?.medical_flags || []).join(', ') || 'none'}.
+Dish tags: ${(item.tags || []).join(', ') || 'none'}.
+Dish macros (per 100g): kcal=${macros.kcal ?? 'NA'}, protein=${macros.protein_g ?? 'NA'}g, carbs=${macros.carbs_g ?? 'NA'}g, fat=${macros.fat_g ?? 'NA'}g, sodium=${macros.sodium_mg ?? 'NA'}mg.
+Evidence abstract: ${(evidenceAbstract).slice(0, 1200)}.`
+      };
+      let answer = '';
+      try{
+        const resp = await fetch('/api/deepseek', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ messages: [systemMsg, userMsg], temperature: 0.4,
+            context: { evidenceTitle: ev?.title, evidenceAbstract, vitals: w, macros, dish: { title: item.title, tags: item.tags } }
+          })
+        });
+        if(resp.ok){
+          const data = await resp.json();
+          answer = (data && data.answer && data.answer.trim() && data.answer !== '(no answer)') ? String(data.answer).trim() : '';
+        }
+      } catch(_e) {}
+
+      if(!answer){
+        let summary = '';
+        if (evidenceAbstract) {
+          const sentences = evidenceAbstract.split(/[.!?]\s+/);
+          summary = sentences.slice(0, 2).join('. ').trim();
+        }
+        const corrParts = [];
+        corrParts.push('1. For higher stress markers → calming, anti-inflammatory foods (try fish, leafy greens, citrus)');
+        corrParts.push('2. For lower calorie burn & steps → balanced, nutrient-dense meals (beans, greens, lean protein)');
+        corrParts.push('3. For sleep issues → magnesium-rich foods (spinach, quinoa, nuts)');
+        corrParts.push('4. To support bone healing → protein, calcium, vitamin D (fish, dairy, leafy greens)');
+        answer = `Your health data is similar to the health data of subject mentioned in the study of the evidence. ${summary ? summary + '. ' : ''}` +
+                 `However, the recommended diet will be:\n${corrParts.join(' \n')}\nSo our dish "${item.title}" best fulfils these for you today.`;
+      }
+      const htmlReason = escapeHtml(answer).replace(/\n/g, '<br>');
+      box.innerHTML += `<br><span class="muted small">AI reason: ${htmlReason}</span>`;
+      const loading = box.querySelector('.loading'); if(loading) loading.remove();
+      item.__reasonHtml = box.innerHTML;
+    }).catch(() => {
+      const generic = 'Based on your personalised health data and the provided evidence, this dish likely aligns with your current metrics.';
+      box.innerHTML += `<br><span class="muted small">AI reason: ${escapeHtml(generic)}</span>`;
+      const loading = box.querySelector('.loading'); if(loading) loading.remove();
+      item.__reasonHtml = box.innerHTML;
+    });
+  });
+}
+
+// ---------- evidence lookup ----------
+const EVIDENCE_QUERIES = {
+  'low-sodium': [
+    'low sodium diet blood pressure clinical trial',
+    'salt intake hypertension study',
+    'reduced salt cardiovascular health',
+    'sodium reduction and heart disease',
+    'low salt diet and stroke prevention'
+  ],
+  'high-protein-snack': [
+    'protein intake muscle recovery study',
+    'high protein snack benefits',
+    'protein snack exercise recovery',
+    'post-workout protein snack research',
+    'protein consumption and muscle synthesis'
+  ],
+  'light-clean': [
+    'light meal digestion benefits',
+    'small meal digestion study',
+    'light dinner health benefits',
+    'low-fat meal digestive efficiency',
+    'healthy light meals research'
+  ],
+  'satvik': [
+    'sattvic diet health benefits',
+    'sattvic food benefits',
+    'ayurvedic sattvic diet',
+    'satvik lifestyle research',
+    'sattvic diet scientific evidence'
+  ],
+  'low-carb': [
+    'low carbohydrate diet blood sugar control',
+    'low carb diet study weight loss',
+    'reduced carbohydrate health benefits',
+    'ketogenic diet clinical trial',
+    'low carb diet and cholesterol'
+  ]
+};
+
+const STATIC_EVIDENCE = {
+  'low-sodium': { title:'Reducing sodium intake lowers blood pressure', url:'https://www.nih.gov/news-events/news-releases/low-sodium-diet-benefits-blood-pressure' },
+  'high-protein-snack': { title:'Why protein matters after exercise', url:'https://www.bhf.org.uk/informationsupport/heart-matters-magazine/nutrition/ask-the-expert/why-is-protein-important-after-exercise' },
+  'light-clean': { title:'Heavy meals can make you feel sluggish', url:'https://health.clevelandclinic.org/should-you-eat-heavy-meals-before-bed' },
+  'low-carb': { title:'Eating protein/veg before carbs helps control blood glucose', url:'https://www.uclahealth.org/news/eating-certain-order-helps-control-blood-glucose' },
+  'satvik': { title:'What Is the Sattvic Diet? Review, Food Lists, and Menu', url:'https://www.healthline.com/nutrition/sattvic-diet-review' }
+};
+
+async function fetchEvidenceForTag(tag){
+  if(!tag) return null;
+  let query;
+  const list = EVIDENCE_QUERIES[tag];
+  if (Array.isArray(list) && list.length > 0) {
+    const idx = Math.floor(Math.random() * list.length);
+    query = list[idx];
+  } else {
+    query = `${tag} diet health benefits`;
+  }
+  try{
+    const r = await fetch(`/api/evidence?q=${encodeURIComponent(query)}`);
+    if(!r.ok) throw new Error('evidence fetch failed');
+    const j = await r.json();
+    if(j && j.title){
+      return j;
+    }
+  } catch(_e){}
+  if(STATIC_EVIDENCE[tag]){
+    return STATIC_EVIDENCE[tag];
+  }
+  return null;
+}
+
+// ---------- macros via OpenFoodFacts ----------
+async function ensureMacros(item){
+  if(item.macros) return;
+  const cached = state.macrosCache[item.title];
+  if(cached && Date.now() - (cached.ts || 0) < 7 * 24 * 60 * 60 * 1000){
+    item.macros = cached.macros; item.macrosSource = cached.source; return;
+  }
+  try{
     const r = await fetch(`/api/ofacts?q=${encodeURIComponent(item.title)}`);
-    if (r.ok) {
+    if(r.ok){
       const j = await r.json();
-      if (j.found && j.macros) {
+      if(j.found && j.macros){
         item.macros = j.macros;
         item.macrosSource = 'OpenFoodFacts';
-        state.macrosCache[item.title] = {
-          ts: Date.now(),
-          macros: item.macros,
-          source: item.macrosSource
-        };
+        state.macrosCache[item.title] = { ts: Date.now(), macros: item.macros, source: item.macrosSource };
         saveCache('macrosCache', state.macrosCache);
       }
     }
-  } catch (_e) {
-    // ignore errors
-  }
+  } catch(_e){}
 }
+
+// ---------- feedback / learning ----------
+function feedback(item, delta){
+  (item.tags || []).forEach(t => {
+    state.model[t] = (state.model[t] || 0) + delta * 2;
+    state.model[t] = clamp(state.model[t], -20, 40);
+    if(!state.tagStats[t]) state.tagStats[t] = { shown: 0, success: 0 };
+    if(delta > 0) state.tagStats[t].success += 1;
+  });
+  saveModel(state.model);
+  saveCache('tagStats', state.tagStats);
+  recompute();
+}
+
+// ---------- model store ----------
+function loadModel(){ try{ return JSON.parse(localStorage.getItem('userModel') || '{}'); } catch(_){ return {}; } }
+function saveModel(m){ localStorage.setItem('userModel', JSON.stringify(m)); }
+
 })();
