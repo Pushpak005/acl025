@@ -33,7 +33,11 @@ let state = {
   // nutritionist data loaded from nutritionists.json
   nutritionists: [],
   // cache for evidence lookups (tag -> { title, url, abstract })
-  evidenceCache: loadCache("evidenceCache")
+  evidenceCache: loadCache("evidenceCache"),
+  // LLM-generated profile tags based on user's medical data
+  profileTags: { tags: [], medical_flags: [], reasoning: '' },
+  // Flag to track if we're using vendor catalog
+  usingVendorCatalog: false
 };
 
 // -----------------------------------------------------------------------------
@@ -105,6 +109,89 @@ async function loadRecipes() {
   // If fetch fails or returns nothing, leave state.catalog as is
 }
 
+// -----------------------------------------------------------------------------
+// Vendor catalog loading
+//
+// Load and filter vendor menus from our partner restaurants. This function
+// queries the serverless /api/vendor-catalog endpoint which transforms the
+// raw partner_menus.json data into a catalog format with tags, types, and
+// location information. The catalog is filtered by user location (simulated
+// for now) and optionally by profile tags to surface the most relevant dishes.
+async function loadVendorCatalog() {
+  try {
+    // TODO: In production, get actual user location from GPS or preferences
+    // For now, simulate Bangalore/HSR Layout as the user location
+    const userLocation = 'Bangalore';
+    
+    const prefs = JSON.parse(localStorage.getItem('prefs') || '{}');
+    
+    // Build query parameters
+    const params = new URLSearchParams();
+    params.append('location', userLocation);
+    
+    // Optionally filter by profile tags if available
+    // We request all items and filter/boost on client side for better control
+    
+    const resp = await fetch(`/api/vendor-catalog?${params.toString()}`);
+    if (resp.ok) {
+      const arr = await resp.json();
+      if (Array.isArray(arr) && arr.length > 0) {
+        // Successfully loaded vendor catalog
+        state.catalog = arr;
+        state.usingVendorCatalog = true;
+        console.log(`Loaded ${arr.length} vendor menu items from ${userLocation}`);
+        
+        // Fetch LLM scores for vendor items
+        await fetchLlmScores(state.catalog);
+        return true;
+      }
+    }
+  } catch (e) {
+    console.warn('Failed to load vendor catalog:', e);
+  }
+  
+  // If vendor catalog fails, flag will remain false and we'll use fallback
+  state.usingVendorCatalog = false;
+  return false;
+}
+
+// -----------------------------------------------------------------------------
+// Profile tags generation
+//
+// Call the LLM-powered /api/profile-tags endpoint to derive diet tags and
+// medical flags from the user's current vitals and preferences. This provides
+// personalized recommendations based on real-time health data rather than
+// static tags. The result is stored in state.profileTags and used to boost
+// matching dishes in the scoring algorithm.
+async function fetchProfileTags() {
+  try {
+    const prefs = JSON.parse(localStorage.getItem('prefs') || '{}');
+    const resp = await fetch('/api/profile-tags', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        vitals: state.wearable || {},
+        preferences: prefs
+      })
+    });
+    
+    if (resp.ok) {
+      const data = await resp.json();
+      if (data && Array.isArray(data.tags)) {
+        state.profileTags = data;
+        console.log('Profile tags:', data.tags.join(', '));
+        console.log('Medical flags:', (data.medical_flags || []).join(', '));
+        return;
+      }
+    }
+  } catch (e) {
+    console.warn('Failed to fetch profile tags:', e);
+  }
+  
+  // Fallback: use empty tags if API fails
+  state.profileTags = { tags: [], medical_flags: [], reasoning: '' };
+}
+
 // Entry point called from index.html once DOM is ready
 window.APP_BOOT = async function(){
   // update the clock every second
@@ -120,8 +207,16 @@ window.APP_BOOT = async function(){
   });
   byId('reshuffle')?.addEventListener('click', () => recompute(true));
   byId('getPicks')?.addEventListener('click', async () => {
-    // Fetch a fresh set of recipes on each click, then recompute rankings
-    await loadRecipes();
+    // Refresh profile tags and catalog when user clicks Get Picks
+    await fetchProfileTags();
+    
+    // Try to load vendor catalog first; if it fails, fall back to recipes
+    const vendorLoaded = await loadVendorCatalog();
+    if (!vendorLoaded) {
+      console.log('Vendor catalog unavailable, using recipe fallback');
+      await loadRecipes();
+    }
+    
     recompute(true);
   });
   byId('prevBtn')?.addEventListener('click', () => {
@@ -136,13 +231,24 @@ window.APP_BOOT = async function(){
   state.catalog = await safeJson(CATALOG_URL, []);
   state.nutritionists = await safeJson(NUTRITIONISTS_URL, []);
 
-  // attempt to fetch fresh recipes from the external API; if successful, this
-  // will overwrite the static catalog.  If it fails (e.g. missing API key),
-  // state.catalog will remain as the static list.
-  await loadRecipes();
-
-  // initial wearable read and polling
+  // initial wearable read - must happen before profile tags
   await pullWearable();
+  
+  // Generate LLM-driven profile tags based on current vitals
+  await fetchProfileTags();
+  
+  // NEW: Try to load vendor catalog first. This replaces the generic recipe
+  // loading with real vendor menus filtered by location and availability.
+  // If vendor catalog fails, fall back to the existing recipe API.
+  const vendorLoaded = await loadVendorCatalog();
+  if (!vendorLoaded) {
+    console.log('Vendor catalog unavailable, falling back to recipe API');
+    // Attempt to fetch fresh recipes from the external API; if successful, this
+    // will overwrite the static catalog. If it fails (e.g. missing API key),
+    // state.catalog will remain as the static list.
+    await loadRecipes();
+  }
+
   // Poll the wearable file less frequently to allow simulated changes to
   // persist.  Rather than refreshing every 60 seconds (which would reset
   // the vitals to the static demo values and reduce variability), fetch
@@ -178,7 +284,10 @@ window.APP_BOOT = async function(){
     }
     state.wearable = w;
     paintHealth(w);
-    recompute();
+    
+    // Refresh profile tags when vitals change significantly
+    // This ensures recommendations adapt to changing health metrics
+    fetchProfileTags().then(() => recompute());
   }
   setInterval(simulateWearableChanges, 30 * 1000);
 
@@ -274,20 +383,52 @@ function recompute(resetPage=false){
 
 function scoreItem(item){
   let s = 0; const tags = item.tags || []; const w = state.wearable || {};
+  
   // base on preference model
   tags.forEach(t => s += (state.model[t] || 0));
-  // adjust for current vitals
+  
+  // NEW: Strong boost for dishes matching LLM-generated profile tags
+  // Profile tags are derived from current health metrics and represent the
+  // most suitable diet patterns for the user right now. We give these a
+  // significant weight (12 points per match) to prioritize personalized
+  // recommendations from the LLM analysis.
+  const profileTags = state.profileTags?.tags || [];
+  tags.forEach(tag => {
+    if (profileTags.includes(tag)) {
+      s += 12;
+    }
+  });
+  
+  // Reduce score for dishes that conflict with medical flags
+  const medicalFlags = state.profileTags?.medical_flags || [];
+  if (medicalFlags.includes('high-bp') || medicalFlags.includes('elevated-bp')) {
+    // Avoid high-sodium dishes
+    if (!tags.includes('low-sodium') && tags.includes('high-sodium')) {
+      s -= 8;
+    }
+  }
+  if (medicalFlags.includes('low-activity')) {
+    // Avoid calorie-heavy dishes when activity is low
+    if (!tags.includes('light-clean') && !tags.includes('low-calorie')) {
+      s -= 4;
+    }
+  }
+  
+  // adjust for current vitals (keep existing heuristics as backup)
   if((w.caloriesBurned||0) > 400 && tags.includes('high-protein-snack')) s += 8;
   if(((w.bpSystolic||0) >= 130 || (w.bpDiastolic||0) >= 80) && tags.includes('low-sodium')) s += 10;
   if(((w.analysis?.activityLevel||'').toLowerCase()) === 'low' && tags.includes('light-clean')) s += 6;
+  
   // novelty factor
   s += Math.random() * 1.5;
+  
   // bandit learning: favour tags that were liked in the past
   tags.forEach(tag => {
     const stats = state.tagStats[tag] || { shown: 0, success: 0 };
     const banditScore = (stats.success + 1) / (stats.shown + 2);
     s += banditScore * 4;
   });
+  
   // incorporate LLM suitability score if available.  The llmScore is
   // normalized between 0 and 10, so we scale it to have similar weight
   // as the bandit scores.  A weight of 2 means the LLM rating can
@@ -296,6 +437,7 @@ function scoreItem(item){
   if (item.llmScore != null) {
     s += (item.llmScore * 2);
   }
+  
   return s;
 }
 
@@ -392,6 +534,7 @@ function cardHtml(item){
           <button class="chip" id="skip-${id}" title="Skip">⨯</button>
         </div>
       </div>
+      ${item.vendorName ? `<div class="muted small mt4">🏪 ${escapeHtml(item.vendorName)}${item.price ? ` • ₹${item.price}` : ''}${item.location ? ` • ${escapeHtml(item.location.split('/')[1] || item.location.split('/')[0])}` : ''}</div>` : ''}
       <div class="row gap8 mt6">
         <button class="pill ghost" id="why-${id}">ℹ Why?</button>
         <button class="pill ghost" id="review-${id}" title="Human review">👩‍⚕️ Review</button>
@@ -413,15 +556,48 @@ function buildWhyHtml(item){
   const personas = ["our analysis"];
   const persona = personas[0];
   const reasons = [];
+  
+  // Reference profile tags in explanation
+  const profileTags = state.profileTags?.tags || [];
+  const medicalFlags = state.profileTags?.medical_flags || [];
+  
+  // Add medical flag context
+  if (medicalFlags.includes('high-bp') || medicalFlags.includes('elevated-bp')) {
+    if (item.tags.includes('low-sodium')) {
+      reasons.push("blood pressure management → low sodium recommended");
+    }
+  }
+  if (medicalFlags.includes('high-activity')) {
+    if (item.tags.includes('high-protein') || item.tags.includes('high-protein-snack')) {
+      reasons.push("high activity recovery → protein-rich meal");
+    }
+  }
+  if (medicalFlags.includes('low-activity')) {
+    if (item.tags.includes('light-clean') || item.tags.includes('low-calorie')) {
+      reasons.push("low activity → light, nutrient-dense option");
+    }
+  }
+  
+  // Add profile tag matches
+  const matchedTags = (item.tags || []).filter(t => profileTags.includes(t));
+  if (matchedTags.length > 0 && reasons.length === 0) {
+    const tagNames = matchedTags.slice(0, 2).join(', ');
+    reasons.push(`recommended diet pattern: ${tagNames}`);
+  }
+  
+  // Fallback to vitals-based heuristics
   if((w.caloriesBurned||0) > 400 && item.tags.includes('high-protein-snack')) reasons.push("high calorie burn → protein supports recovery");
   if(((w.bpSystolic||0) >= 130 || (w.bpDiastolic||0) >= 80) && item.tags.includes('low-sodium')) reasons.push("elevated BP → low sodium helps");
   if(((w.analysis?.activityLevel||'').toLowerCase()) === 'low' && item.tags.includes('light-clean')) reasons.push("low activity → lighter, easy-to-digest meal");
   const tagExplain = {
     'satvik':'simple, plant-based, easy to digest',
     'low-carb':'lower carbs to avoid spikes',
+    'high-protein':'higher protein to support muscle',
     'high-protein-snack':'higher protein to support muscle',
     'low-sodium':'reduced sodium for BP control',
-    'light-clean':'minimal oil, clean prep'
+    'light-clean':'minimal oil, clean prep',
+    'balanced':'well-rounded nutrition',
+    'anti-inflammatory':'anti-inflammatory benefits'
   };
   const fallback = (item.tags||[]).map(t => tagExplain[t]).filter(Boolean)[0] || 'matches your preferences';
   // Compose a descriptive string summarising the user's current vitals to
@@ -430,6 +606,12 @@ function buildWhyHtml(item){
   // mismatches can confuse users.  Instead, we reference the metrics in
   // general terms (calorie burn, blood pressure, activity).
   let why = reasons.length ? reasons.join(' • ') : fallback;
+  
+  // Add vendor context if this is from vendor catalog
+  if (state.usingVendorCatalog && item.vendorName) {
+    why = `${why}, available from nearby vendor`;
+  }
+  
   // Append context about wearable metrics to the heuristic explanation
   // using generic phrasing rather than numbers.
   const hasVitals = (w && (w.caloriesBurned != null || (w.bpSystolic != null && w.bpDiastolic != null) || (w.analysis && w.analysis.activityLevel)));
@@ -498,8 +680,11 @@ function toggleWhy(item){
       const userMsg = {
         role: 'user',
         content: `User metrics now: heartRate=${w.heartRate ?? 'NA'}, caloriesBurned=${w.caloriesBurned ?? 'NA'}, steps=${w.steps ?? 'NA'}, bloodPressure=${w.bpSystolic ?? 'NA'}/${w.bpDiastolic ?? 'NA'}.\n` +
+          `Recommended diet patterns (LLM-generated): ${(state.profileTags?.tags || []).join(', ') || 'none'}.\n` +
+          `Medical flags: ${(state.profileTags?.medical_flags || []).join(', ') || 'none'}.\n` +
           `Dish tags: ${(item.tags || []).join(', ') || 'none'}.\n` +
           `Dish macros (per 100g): kcal=${macros.kcal ?? 'NA'}, protein=${macros.protein_g ?? 'NA'}g, carbs=${macros.carbs_g ?? 'NA'}g, fat=${macros.fat_g ?? 'NA'}g, sodium=${macros.sodium_mg ?? 'NA'}mg.\n` +
+          `${state.usingVendorCatalog && item.vendorName ? `This dish is from ${item.vendorName}, a nearby vendor.\n` : ''}` +
           `Evidence abstract: ${(evidenceAbstract).slice(0, 1200)}.`
       };
       let answer = '';
