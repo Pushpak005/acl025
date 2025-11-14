@@ -24,6 +24,9 @@ const CATALOG_URL  = "food_catalog.json";
 const WEARABLE_URL = "wearable_stream.json";
 const NUTRITIONISTS_URL = "nutritionists.json";
 
+// Partner vendors configuration - easily updatable list of allowed partners
+window.PARTNER_VENDORS = ["Healthybee", "Swad Gomantak", "shree krishna veg menues"];
+
 let state = {
   catalog: [], wearable: {}, page: 0, pageSize: 10, scores: [],
   model: loadModel(), recomputeTimer: null, wearableTimer: null,
@@ -105,6 +108,66 @@ async function loadRecipes() {
   // If fetch fails or returns nothing, leave state.catalog as is
 }
 
+// -----------------------------------------------------------------------------
+// Partner menus loading
+//
+// This function loads partner menu data from data/partner_menus.json via the
+// Netlify serverless function /api/getPartnerMenus. It filters the menus based
+// on allowed vendors (window.PARTNER_VENDORS), deduplicates items by title,
+// and filters based on user preferences. The menu data is already normalized
+// with title, price, description, vendor, tags, and macros fields.
+async function loadPartnerMenus() {
+  try {
+    const resp = await fetch('/api/getPartnerMenus');
+    if (!resp.ok) {
+      console.warn('Failed to fetch partner menus, status:', resp.status);
+      return;
+    }
+    
+    const data = await resp.json();
+    if (!data.success || !Array.isArray(data.menus)) {
+      console.warn('Invalid partner menus response');
+      return;
+    }
+    
+    let menus = data.menus;
+    
+    // Filter by allowed partner vendors
+    menus = menus.filter(item => {
+      return window.PARTNER_VENDORS.includes(item.vendor);
+    });
+    
+    // Deduplicate by title (case-insensitive)
+    const seen = new Map();
+    menus = menus.filter(item => {
+      const key = (item.title || '').toLowerCase().trim();
+      if (!key || seen.has(key)) return false;
+      seen.set(key, true);
+      return true;
+    });
+    
+    // Filter based on user preferences
+    const prefs = JSON.parse(localStorage.getItem('prefs') || '{}');
+    if (prefs.diet === 'veg') {
+      menus = menus.filter(item => item.type === 'veg');
+    } else if (prefs.diet === 'nonveg') {
+      menus = menus.filter(item => item.type === 'nonveg');
+    }
+    
+    if (Array.isArray(menus) && menus.length > 0) {
+      // populate the catalog with partner menus
+      state.catalog = menus;
+      // fetch LLM suitability scores for each menu item
+      await fetchLlmScores(state.catalog);
+      console.log(`Loaded ${menus.length} partner menu items`);
+    } else {
+      console.warn('No partner menus available after filtering');
+    }
+  } catch (e) {
+    console.warn('Failed to fetch partner menus', e);
+  }
+}
+
 // Entry point called from index.html once DOM is ready
 window.APP_BOOT = async function(){
   // update the clock every second
@@ -120,8 +183,8 @@ window.APP_BOOT = async function(){
   });
   byId('reshuffle')?.addEventListener('click', () => recompute(true));
   byId('getPicks')?.addEventListener('click', async () => {
-    // Fetch a fresh set of recipes on each click, then recompute rankings
-    await loadRecipes();
+    // Fetch a fresh set of partner menus on each click, then recompute rankings
+    await loadPartnerMenus();
     recompute(true);
   });
   byId('prevBtn')?.addEventListener('click', () => {
@@ -136,10 +199,9 @@ window.APP_BOOT = async function(){
   state.catalog = await safeJson(CATALOG_URL, []);
   state.nutritionists = await safeJson(NUTRITIONISTS_URL, []);
 
-  // attempt to fetch fresh recipes from the external API; if successful, this
-  // will overwrite the static catalog.  If it fails (e.g. missing API key),
-  // state.catalog will remain as the static list.
-  await loadRecipes();
+  // Load partner menus from data/partner_menus.json. This will overwrite the
+  // static catalog with fresh partner menu data filtered by allowed vendors.
+  await loadPartnerMenus();
 
   // initial wearable read and polling
   await pullWearable();
@@ -382,6 +444,11 @@ function cardHtml(item){
     const q = `${item.title} healthy Bangalore`;
     searchUrl = `https://www.swiggy.com/search?q=${encodeURIComponent(q)}`;
   }
+  
+  // Display vendor and price if available
+  const vendorHtml = item.vendor ? `<span class="muted small">from ${escapeHtml(item.vendor)}</span>` : '';
+  const priceHtml = item.price ? `<span class="muted small">₹${item.price}</span>` : '';
+  
   return `
     <li class="card">
       <div class="tile">${escapeHtml(item.hero || item.title)}</div>
@@ -392,6 +459,7 @@ function cardHtml(item){
           <button class="chip" id="skip-${id}" title="Skip">⨯</button>
         </div>
       </div>
+      ${vendorHtml || priceHtml ? `<div class="row gap8 mt4">${vendorHtml}${vendorHtml && priceHtml ? ' • ' : ''}${priceHtml}</div>` : ''}
       <div class="row gap8 mt6">
         <button class="pill ghost" id="why-${id}">ℹ Why?</button>
         <button class="pill ghost" id="review-${id}" title="Human review">👩‍⚕️ Review</button>
