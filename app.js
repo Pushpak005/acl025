@@ -40,7 +40,11 @@ let state = {
 };
 
 // -----------------------------------------------------------------------------
-// Recipe loading
+// Recipe loading (LEGACY - Not currently used)
+//
+// NOTE: This function is no longer used. The app now uses loadPartnerMenus()
+// to load menu data from partner_menus.json instead of external APIs.
+// This function is kept for reference but is not called in the current flow.
 //
 // To provide a wide variety of dishes without storing a static catalog, this
 // function queries our Netlify serverless function `/api/recipes`, which in
