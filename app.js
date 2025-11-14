@@ -348,5 +348,34 @@ function cardHtml(item){
 
 function loadModel(){ try{ return JSON.parse(localStorage.getItem('userModel') || '{}'); } catch(_){ return {}; } }
 function saveModel(m){ localStorage.setItem('userModel', JSON.stringify(m)); }
+// ---------- macros via OpenFoodFacts function ----------
+async function ensureMacros(item){
+  if (item.macros) return;
 
+  const cached = state.macrosCache[item.title];
+  if (cached && Date.now() - (cached.ts || 0) < 7 * 24 * 60 * 60 * 1000) {
+    item.macros = cached.macros;
+    item.macrosSource = cached.source;
+    return;
+  }
+
+  try {
+    const r = await fetch(`/api/ofacts?q=${encodeURIComponent(item.title)}`);
+    if (r.ok) {
+      const j = await r.json();
+      if (j.found && j.macros) {
+        item.macros = j.macros;
+        item.macrosSource = 'OpenFoodFacts';
+        state.macrosCache[item.title] = {
+          ts: Date.now(),
+          macros: item.macros,
+          source: item.macrosSource
+        };
+        saveCache('macrosCache', state.macrosCache);
+      }
+    }
+  } catch (_e) {
+    // ignore errors
+  }
+}
 })();
