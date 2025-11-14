@@ -36,157 +36,65 @@ let state = {
   evidenceCache: loadCache("evidenceCache")
 };
 
-// ----------------- PARTNER MENUS LOADER -----------------
-// Loads partner_menus either via Netlify function or static JSON
-// Normalizes partner menu items into the internal recipe shape used by the app:
-// { title, hero, link, tags:[], macros:null, price, hotel, id }
-async function loadPartnerMenus() {
-  try {
-    // 1) Try static file first (fast and reliable if present)
-    try {
-      const respStatic = await fetch('/data/partner_menus.json', { cache: "no-cache" });
-      if (respStatic.ok) {
-        const arr = await respStatic.json();
-        if (Array.isArray(arr) && arr.length) {
-          return arr.map((m, idx) => ({
-            id: 'p_' + idx,
-            name: m.name || m.title || '',
-            title: String(m.name || m.title || '').trim(),
-            hero: String(m.name || m.title || '').trim(),
-            link: m.link || (`https://www.swiggy.com/search?q=${encodeURIComponent((m.name || '').trim() + ' ' + (m.hotel || ''))}`),
-            tags: m.tags || [],
-            macros: m.macros || null,
-            price: m.price || '',
-            hotel: m.hotel || '',
-          })).filter(it => it.title);
-        }
-      }
-    } catch (e) {
-      console.info('Static partner_menus.json not reachable (ok), will try function', e && e.message);
-    }
-
-    // 2) Fallback: Netlify function
-    const resp = await fetch('/.netlify/functions/getPartnerMenus');
-    if (resp.ok) {
-      const js = await resp.json();
-      if (js && js.success && Array.isArray(js.menus)) {
-        return js.menus.map((m, idx) => ({
-          id: 'p_' + idx,
-          name: m.name || m.title || '',
-          title: String(m.name || m.title || '').trim(),
-          hero: String(m.name || m.title || '').trim(),
-          link: m.link || (`https://www.swiggy.com/search?q=${encodeURIComponent((m.name || '').trim() + ' ' + (m.hotel || ''))}`),
-          tags: m.tags || [],
-          macros: m.macros || null,
-          price: m.price || '',
-          hotel: m.hotel || '',
-        })).filter(it => it.title);
-      }
-    }
-    return [];
-  } catch (e) {
-    console.error('Failed to load partner menus:', e);
-    return [];
-  }
-}
-
-async function loadPartnerMenus() {
-  try {
-    // try Netlify function first
-    const resp = await fetch('/.netlify/functions/getPartnerMenus');
-    if (resp.ok) {
-      const js = await resp.json();
-      if (js && js.success && Array.isArray(js.menus)) {
-        return js.menus.map((m, idx) => ({
-          title: String(m.name || m.title || '').trim(),
-          hero: String(m.name || m.title || '').trim(),
-          link: (m.link || `https://www.swiggy.com/search?q=${encodeURIComponent((m.name || '').trim() + ' ' + (m.hotel || ''))}`),
-          tags: m.tags || [],
-          macros: m.macros || null,
-          price: m.price || '',
-          hotel: m.hotel || '',
-          id: 'p_' + idx
-        })).filter(it => it.title && it.title.length > 0);
-      }
-    }
-    // fallback to static JSON file served as /data/partner_menus.json
-    const resp2 = await fetch('/data/partner_menus.json');
-    if (resp2.ok) {
-      const arr = await resp2.json();
-      return arr.map((m, idx) => ({
-        title: String(m.name || m.title || '').trim(),
-        hero: String(m.name || m.title || '').trim(),
-        link: (m.link || `https://www.swiggy.com/search?q=${encodeURIComponent((m.name || '').trim() + ' ' + (m.hotel || ''))}`),
-        tags: m.tags || [],
-        macros: m.macros || null,
-        price: m.price || '',
-        hotel: m.hotel || '',
-        id: 'p_' + idx
-      })).filter(it => it.title && it.title.length > 0);
-    }
-    return [];
-  } catch (e) {
-    console.error('Failed to load partner menus:', e);
-    return [];
-  }
-}
-// Expose promise so other code can wait for menus to be ready
-window.__partnerMenusReady = loadPartnerMenus().then(items => {
-  window.PARTNER_CATALOG = items;
-  // set window.CATALOG only if nothing else sets it so we don't accidentally override
-  if (!window.CATALOG) window.CATALOG = items;
-  console.info('Partner menus loaded:', items.length);
-  return items;
-}).catch(err => {
-  console.error('Partner menus failed to load', err);
-  return [];
-});
-
 // -----------------------------------------------------------------------------
 // Recipe loading
 //
-// Modified so the app uses partner menus as the primary catalog. If partner
-// menus are available we set state.catalog to them and optionally score them.
-// If not available, we fall back to the previous external recipe flow.
+// To provide a wide variety of dishes without storing a static catalog, this
+// function queries our Netlify serverless function `/api/recipes`, which in
+// turn calls an external recipe API (API Ninjas).  It sets state.catalog to
+// the returned array of dishes.  If the call fails (e.g. missing API key),
+// state.catalog remains unchanged.  The query parameter can be adjusted
+// according to user preferences (diet type, etc.) but defaults to a balanced
+// diet.  A `limit` of 6 is used to match the number of cards displayed.
 async function loadRecipes() {
   try {
-    // Wait for partner menus to be ready
-    const partner = await window.__partnerMenusReady;
-    if (Array.isArray(partner) && partner.length > 0) {
-      // Use partner menus as the catalog
-      state.catalog = partner;
-      // Optional: compute LLM scores for the top N items to save calls.
-      // We'll compute scores for the first 20 items (or fewer).
-      const toScore = state.catalog.slice(0, 20);
-      try {
-        await fetchLlmScores(toScore);
-      } catch (_e) {
-        console.warn('LLM scoring failed (partner menus)', _e);
-      }
-      return;
-    }
-  } catch (e) {
-    console.warn('Partner menu load failed inside loadRecipes', e);
-  }
-
-  // If partner menus are not available, fall back to the previous external recipe API.
-  try {
     const prefs = JSON.parse(localStorage.getItem('prefs') || '{}');
+    /*
+      Build a search query for the recipe API based on the user's current
+      health metrics and diet preferences.  We bias the search to surface
+      dishes that match the user's needs: high protein after a big calorie
+      burn, low sodium for high blood pressure, or light meals for low
+      activity.  We then append a vegetarian/non‑vegetarian tag based on
+      preferences to further filter results.  This produces queries like
+      "high protein healthy vegetarian" or "low sodium diet nonveg".  If
+      no specific condition applies, default to a balanced diet.
+    */
     let query = 'balanced diet';
     try {
       const w = state.wearable || {};
-      if ((w.caloriesBurned || 0) > 400) query = 'high protein healthy';
-      if (((w.bpSystolic || 0) >= 130 || (w.bpDiastolic || 0) >= 80)) query = 'low sodium diet';
-      if (((w.analysis?.activityLevel || '').toLowerCase()) === 'low') query = 'light meal';
-      if (prefs.diet === 'veg') query = `${query} vegetarian healthy`;
-      else if (prefs.diet === 'nonveg') query = `${query} chicken`;
-    } catch (_e) { /* ignore */ }
-
+      // adjust query based on vitals
+      if ((w.caloriesBurned || 0) > 400) {
+        query = 'high protein healthy';
+      }
+      if (((w.bpSystolic || 0) >= 130 || (w.bpDiastolic || 0) >= 80)) {
+        query = 'low sodium diet';
+      }
+      if (((w.analysis?.activityLevel || '').toLowerCase()) === 'low') {
+        query = 'light meal';
+      }
+      // adjust query based on diet preference
+      if (prefs.diet === 'veg') {
+        query = `${query} vegetarian healthy`;
+      } else if (prefs.diet === 'nonveg') {
+        query = `${query} chicken`;
+      }
+    } catch (_e) {
+      // ignore errors in wearable parsing; use default query
+    }
+    // Request a larger pool of recipes (up to 12) so we can display more
+    // options to the user.  We later rank and paginate these results on
+    // the client.  If fewer than 12 are available the API will return
+    // whatever it can.
     const resp = await fetch(`/api/recipes?q=${encodeURIComponent(query)}&limit=20`);
     if (resp.ok) {
       const arr = await resp.json();
       if (Array.isArray(arr) && arr.length > 0) {
+        // populate the catalog with fresh recipes
         state.catalog = arr;
+        // fetch LLM suitability scores for each recipe.  This function will
+        // call the serverless /api/score endpoint to obtain a rating from
+        // 1–10 based on the user’s vitals and macros.  The score is stored
+        // in item.llmScore and later used in ranking.
         await fetchLlmScores(state.catalog);
         return;
       }
@@ -194,7 +102,7 @@ async function loadRecipes() {
   } catch (e) {
     console.warn('Failed to fetch recipes', e);
   }
-  // leave state.catalog as is (may be static fallback loaded earlier)
+  // If fetch fails or returns nothing, leave state.catalog as is
 }
 
 // Entry point called from index.html once DOM is ready
@@ -212,8 +120,7 @@ window.APP_BOOT = async function(){
   });
   byId('reshuffle')?.addEventListener('click', () => recompute(true));
   byId('getPicks')?.addEventListener('click', async () => {
-    // Fetch a fresh set of recipes (partner menus preferred).  This will re-load partner
-    // menus and recompute rankings.
+    // Fetch a fresh set of recipes on each click, then recompute rankings
     await loadRecipes();
     recompute(true);
   });
@@ -229,7 +136,9 @@ window.APP_BOOT = async function(){
   state.catalog = await safeJson(CATALOG_URL, []);
   state.nutritionists = await safeJson(NUTRITIONISTS_URL, []);
 
-  // attempt to load partner menus (preferred) and then recipes if partner not present
+  // attempt to fetch fresh recipes from the external API; if successful, this
+  // will overwrite the static catalog.  If it fails (e.g. missing API key),
+  // state.catalog will remain as the static list.
   await loadRecipes();
 
   // initial wearable read and polling
@@ -466,11 +375,13 @@ function cardHtml(item){
   if (item.link) {
     searchUrl = item.link;
   } else {
+    // Build a Swiggy search URL for the dish with an additional
+    // "healthy Bangalore" qualifier so the results surface healthy
+    // options in our launch neighbourhoods.  Remove the fallback to
+    // generic search to ensure the link always opens Swiggy.
     const q = `${item.title} healthy Bangalore`;
     searchUrl = `https://www.swiggy.com/search?q=${encodeURIComponent(q)}`;
   }
-  // If item has partner metadata show hotel and price
-  const hotelLine = item.hotel ? `<div class="muted small">From: ${escapeHtml(item.hotel)} • ₹${escapeHtml(item.price || '')}</div>` : '';
   return `
     <li class="card">
       <div class="tile">${escapeHtml(item.hero || item.title)}</div>
@@ -481,7 +392,6 @@ function cardHtml(item){
           <button class="chip" id="skip-${id}" title="Skip">⨯</button>
         </div>
       </div>
-      ${hotelLine}
       <div class="row gap8 mt6">
         <button class="pill ghost" id="why-${id}">ℹ Why?</button>
         <button class="pill ghost" id="review-${id}" title="Human review">👩‍⚕️ Review</button>
@@ -494,12 +404,18 @@ function cardHtml(item){
 // ---------- rule-based why explanation ----------
 function buildWhyHtml(item){
   const w = state.wearable || {};
+  // Use a single generic persona for the heuristic explanation.  This avoids
+  // implying endorsement from specific doctors or trainers.  Human
+  // professionals should be surfaced via the review page instead.
+  // Use a generic label instead of referring to an AI assistant or doctor.  This
+  // keeps the explanation from sounding like it comes from a person and
+  // emphasises that it is an analysis of your data.
   const personas = ["our analysis"];
   const persona = personas[0];
   const reasons = [];
-  if((w.caloriesBurned||0) > 400 && (item.tags||[]).includes('high-protein-snack')) reasons.push("high calorie burn → protein supports recovery");
-  if(((w.bpSystolic||0) >= 130 || (w.bpDiastolic||0) >= 80) && (item.tags||[]).includes('low-sodium')) reasons.push("elevated BP → low sodium helps");
-  if(((w.analysis?.activityLevel||'').toLowerCase()) === 'low' && (item.tags||[]).includes('light-clean')) reasons.push("low activity → lighter, easy-to-digest meal");
+  if((w.caloriesBurned||0) > 400 && item.tags.includes('high-protein-snack')) reasons.push("high calorie burn → protein supports recovery");
+  if(((w.bpSystolic||0) >= 130 || (w.bpDiastolic||0) >= 80) && item.tags.includes('low-sodium')) reasons.push("elevated BP → low sodium helps");
+  if(((w.analysis?.activityLevel||'').toLowerCase()) === 'low' && item.tags.includes('light-clean')) reasons.push("low activity → lighter, easy-to-digest meal");
   const tagExplain = {
     'satvik':'simple, plant-based, easy to digest',
     'low-carb':'lower carbs to avoid spikes',
@@ -508,7 +424,14 @@ function buildWhyHtml(item){
     'light-clean':'minimal oil, clean prep'
   };
   const fallback = (item.tags||[]).map(t => tagExplain[t]).filter(Boolean)[0] || 'matches your preferences';
+  // Compose a descriptive string summarising the user's current vitals to
+  // contextualise the recommendation.  We avoid including specific numbers
+  // because wearable data may update at a different pace than the UI and
+  // mismatches can confuse users.  Instead, we reference the metrics in
+  // general terms (calorie burn, blood pressure, activity).
   let why = reasons.length ? reasons.join(' • ') : fallback;
+  // Append context about wearable metrics to the heuristic explanation
+  // using generic phrasing rather than numbers.
   const hasVitals = (w && (w.caloriesBurned != null || (w.bpSystolic != null && w.bpDiastolic != null) || (w.analysis && w.analysis.activityLevel)));
   if (hasVitals) {
     const parts = [];
@@ -520,6 +443,9 @@ function buildWhyHtml(item){
   } else {
     why = `${why} based on your wearable metrics`;
   }
+  // We intentionally omit the macros line and data source details in the UI
+  // to avoid overwhelming the user with technical nutrition numbers.  The
+  // macros are still used internally for scoring, but they are not shown.
   return `<div class="whyline"><b>${persona}:</b> ${escapeHtml(why)}.</div>`;
 }
 
@@ -529,25 +455,36 @@ function toggleWhy(item){
   const box = byId(`whybox-${id}`);
   if (!box) return;
 
+  // If we already built the reason for this dish, show it and keep the panel open.
   if (item.__reasonHtml) {
     box.innerHTML = item.__reasonHtml;
     box.hidden = false;
     return;
   }
+  // Always display the why panel; do not toggle it closed on repeated clicks.
   box.hidden = false;
+  // Add heuristic explanation immediately for user feedback.
   box.innerHTML = buildWhyHtml(item);
+  // Show loading indicator while we fetch evidence and call the LLM.
   box.innerHTML += '<div class="loading">Fetching evidence and AI reasoning…</div>';
+  // Ensure macros are available for this item (fetches from OpenFoodFacts if needed).
   ensureMacros(item).then(() => {
+    // Determine or fetch evidence for the primary tag.  Cache evidence on
+    // the item so it remains constant for this dish.
     const tags = item.tags || [];
     const tag = tags[0];
-    const fetchEv = item.__evidence ? Promise.resolve(item.__evidence) : fetchEvidenceForTag(tag).then(ev => { item.__evidence = ev; return ev; });
+    const fetchEv = item.__evidence ? Promise.resolve(item.__evidence) : fetchEvidenceForTag(tag).then(ev => {
+      item.__evidence = ev; return ev;
+    });
     fetchEv.then(async (ev) => {
+      // Add evidence link if present (only once).
       if(ev && ev.url){
         box.innerHTML += `<br><span class="muted small">Evidence: <a href="${escapeHtml(ev.url)}" target="_blank" rel="noopener">View study</a></span>`;
       }
       const evidenceAbstract = ev?.abstract || '';
       const w = state.wearable || {};
       const macros = item.macros || {};
+      // Build messages for the LLM: one system prompt and one user prompt.
       const systemMsg = {
         role: 'system',
         content: `You are a clinical nutritionist. Always: \n` +
@@ -578,14 +515,28 @@ function toggleWhy(item){
           const data = await resp.json();
           answer = (data && data.answer && data.answer.trim() && data.answer !== '(no answer)') ? String(data.answer).trim() : '';
         }
-      } catch(_e) { /* ignore */ }
+      } catch(_e) {
+        // ignore errors; we will build fallback explanation below
+      }
+      // Fallback logic: build a deterministic summary and correlation if the model fails
       if(!answer){
         let summary = '';
         if (evidenceAbstract) {
           const sentences = evidenceAbstract.split(/[.!?]\s+/);
           summary = sentences.slice(0, 2).join('. ').trim();
         }
+        const metricsParts = [];
+        if (w.heartRate != null) metricsParts.push(`heart rate ${w.heartRate}`);
+        if (w.caloriesBurned != null) metricsParts.push(`burn ${w.caloriesBurned} kcal`);
+        if (w.steps != null) metricsParts.push(`${w.steps} steps`);
+        if (w.bpSystolic != null && w.bpDiastolic != null) metricsParts.push(`BP ${w.bpSystolic}/${w.bpDiastolic}`);
         const corrParts = [];
+        // We use tag heuristics to recommend categories of foods.
+        const hasHighProtein = (item.tags || []).includes('high-protein-snack');
+        const hasLowSodium   = (item.tags || []).includes('low-sodium');
+        const hasLight       = (item.tags || []).includes('light-clean');
+        const hasSatvik      = (item.tags || []).includes('satvik');
+        const hasLowCarb     = (item.tags || []).includes('low-carb');
         corrParts.push('1. For higher stress markers → calming, anti-inflammatory foods (try fish, leafy greens, citrus)');
         corrParts.push('2. For lower calorie burn & steps → balanced, nutrient-dense meals (beans, greens, lean protein)');
         corrParts.push('3. For sleep issues → magnesium-rich foods (spinach, quinoa, nuts)');
@@ -593,11 +544,16 @@ function toggleWhy(item){
         answer = `Your health data is similar to the health data of subject mentioned in the study of the evidence. ${summary ? summary + '. ' : ''}` +
                  `However, the recommended diet will be:\n${corrParts.join(' \n')}\nSo our dish \"${item.title}\" best fulfils these for you today.`;
       }
+      // Convert newlines to <br> and escape HTML for safe rendering
       const htmlReason = escapeHtml(answer).replace(/\n/g, '<br>');
+      // Append the AI reason below the heuristic line
       box.innerHTML += `<br><span class="muted small">AI reason: ${htmlReason}</span>`;
+      // Remove loading indicator
       const loading = box.querySelector('.loading'); if(loading) loading.remove();
+      // Cache the final reason HTML on the item so subsequent clicks reuse it
       item.__reasonHtml = box.innerHTML;
     }).catch(() => {
+      // On error retrieving evidence, fallback to generic explanation
       const generic = 'Based on your personalised health data and the provided evidence, this dish likely aligns with your current metrics.';
       box.innerHTML += `<br><span class="muted small">AI reason: ${escapeHtml(generic)}</span>`;
       const loading = box.querySelector('.loading'); if(loading) loading.remove();
@@ -609,8 +565,10 @@ function toggleWhy(item){
 // ---------- feedback / learning ----------
 function feedback(item, delta){
   (item.tags || []).forEach(t => {
+    // update user preference model
     state.model[t] = (state.model[t] || 0) + delta * 2;
     state.model[t] = clamp(state.model[t], -20, 40);
+    // update bandit success counts on positive feedback
     if(!state.tagStats[t]) state.tagStats[t] = { shown: 0, success: 0 };
     if(delta > 0) state.tagStats[t].success += 1;
   });
@@ -624,6 +582,10 @@ function loadModel(){ try{ return JSON.parse(localStorage.getItem('userModel') |
 function saveModel(m){ localStorage.setItem('userModel', JSON.stringify(m)); }
 
 // ---------- evidence lookups ----------
+// Predefined search queries per tag for evidence lookup.  To provide
+// varied research evidence for the same tag, each entry is an array of
+// semantically related queries.  fetchEvidenceForTag will pick one at
+// random each time it is invoked.
 const EVIDENCE_QUERIES = {
   'low-sodium': [
     'low sodium diet blood pressure clinical trial',
@@ -662,6 +624,7 @@ const EVIDENCE_QUERIES = {
   ]
 };
 
+// Static evidence entries used when API calls fail
 const STATIC_EVIDENCE = {
   'low-sodium': { title:'Reducing sodium intake lowers blood pressure', url:'https://www.nih.gov/news-events/news-releases/low-sodium-diet-benefits-blood-pressure' },
   'high-protein-snack': { title:'Why protein matters after exercise', url:'https://www.bhf.org.uk/informationsupport/heart-matters-magazine/nutrition/ask-the-expert/why-is-protein-important-after-exercise' },
@@ -672,6 +635,9 @@ const STATIC_EVIDENCE = {
 
 async function fetchEvidenceForTag(tag){
   if(!tag) return null;
+  // Choose a random query from the list if available, otherwise default to a
+  // generic pattern.  This introduces diversity in the research articles
+  // fetched from Crossref.
   let query;
   const list = EVIDENCE_QUERIES[tag];
   if (Array.isArray(list) && list.length > 0) {
@@ -688,6 +654,7 @@ async function fetchEvidenceForTag(tag){
       return j;
     }
   } catch(_e){ /* ignore */ }
+  // fallback to static evidence if available
   if(STATIC_EVIDENCE[tag]){
     return STATIC_EVIDENCE[tag];
   }
