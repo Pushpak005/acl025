@@ -17,13 +17,8 @@
 
 exports.handler = async function(event) {
   // Resolve API key from environment
+  // Resolve API key from environment. If missing, use fallback heuristic mode.
   const apiKey = process.env.DEEPSEEK_API_KEY || process.env.OPENAI_API_KEY || process.env.ACL_API;
-  if (!apiKey) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: 'Missing LLM API key (set DEEPSEEK_API_KEY, OPENAI_API_KEY or ACL_API)' })
-    };
-  }
 
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: JSON.stringify({ error: 'Method not allowed' }) };
@@ -38,6 +33,15 @@ exports.handler = async function(event) {
 
   const vitals = body.vitals || {};
   const preferences = body.preferences || {};
+
+  // If no API key is available, use fallback heuristic mode immediately
+  if (!apiKey) {
+    console.log('No LLM API key found, using heuristic fallback');
+    return {
+      statusCode: 200,
+      body: JSON.stringify(generateFallbackTags(vitals, preferences))
+    };
+  }
 
   // Build a comprehensive prompt for the LLM to analyze health metrics and recommend diet tags
   const systemMsg = {
